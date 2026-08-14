@@ -3,6 +3,9 @@
 Web de portfolio en tres idiomas (español, inglés y chino) para captar clientes freelance.
 Hecha con [Astro](https://astro.build) y publicada gratis en GitHub Pages.
 
+Se adapta sola al modo claro u oscuro del visitante: si tiene el móvil en oscuro, la ve
+oscura. No hay botón que pulsar.
+
 ---
 
 ## Lo único que necesitas saber para editarla
@@ -34,20 +37,19 @@ Si algo se rompe, el sitio te avisará al construirlo y siempre puedes deshacer 
 ## Lo que tienes que rellenar
 
 Busca en los archivos la palabra **`TODO`**. Cada `TODO` es un hueco que solo puedes
-rellenar tú. Mientras estén sin rellenar **se ven en la web dentro de un recuadro naranja
+rellenar tú. Mientras estén sin rellenar **se ven en la web dentro de un recuadro verde
 discontinuo**, para que no se te escape ninguno. En cuanto borras la palabra `TODO` y
 escribes tu texto, el recuadro desaparece solo.
 
 Lo que falta ahora mismo:
 
-- [ ] **AVPINOX**: problema, solución y resultado. Comprueba también que la dirección web
-      (`enlace`) sea la correcta.
-- [ ] **Tu segunda web**: nombre, resumen, problema, solución, resultado y enlace.
 - [ ] **Gestor de facturas**: el resultado (horas ahorradas por trimestre, facturas
-      gestionadas... cualquier número real).
+      gestionadas al año... cualquier número real, aunque sea aproximado).
 - [ ] **Sobre mí**: dos o tres frases tuyas.
 - [ ] Tu nombre, si no es "Jordi" (aparece en `src/components/Nav.astro` y
       `src/components/Footer.astro`).
+- [ ] **AVPINOX**: cuando le conectes el dominio, pon la dirección en `enlace` y actualiza
+      el campo `estado`. Los textos y las métricas ya están puestos a partir del repo.
 
 ### Consejo para escribir los proyectos
 
@@ -156,8 +158,21 @@ rellenan y las personas no. Si llega relleno, el mensaje se descarta sin avisar 
 ## Cambiar el aspecto
 
 Todos los colores están en un solo sitio: `src/styles/global.css`, arriba del todo.
-Si cambias `--color-acento` (ahora naranja `#ff7a45`), cambian a la vez los botones,
-enlaces, iconos y detalles de toda la web.
+Hay dos bloques, uno por tema, y en cada uno una línea marcada con `ACENTO`. Si cambias
+esas dos líneas cambian a la vez los botones, enlaces, iconos y detalles de toda la web.
+
+Los dos acentos deben ser el mismo color en versiones distintas: uno más oscuro para el
+tema claro y otro más luminoso para el oscuro. Si los pones al revés, el texto deja de
+leerse.
+
+Los radios de las esquinas siguen una regla fija, y conviene respetarla: **botones** en
+pastilla, **tarjetas** a 14px (`rounded-tarjeta`), **campos y etiquetas** a 8px
+(`rounded-chico`). Mezclar radios sin criterio es de las cosas que más delatan una web
+hecha a ojo.
+
+Los iconos son de [Phosphor](https://phosphoricons.com). Para cambiar uno, busca el
+nombre en su web y ponlo en el JSON con el prefijo `ph:` (por ejemplo `ph:flow-arrow`).
+Se incrustan al construir la web, así que no añaden ni una petición ni JavaScript.
 
 ---
 
@@ -179,9 +194,19 @@ src/
 │   └── Footer.astro
 ├── layouts/Base.astro    (estructura común: título, SEO, idiomas)
 ├── lib/i18n.ts           (carga los textos del idioma correcto)
-├── styles/global.css     ← LOS COLORES
+├── styles/global.css     ← LOS COLORES (dos temas) Y LOS RADIOS
 └── pages/                (una página por idioma)
+
+public/
+└── imagenes/             ← las capturas de los proyectos
 ```
+
+### Por qué Astro y no Next.js
+
+AVPINOX usa Next.js porque necesita servidor: el formulario envía correos de verdad
+desde el backend. Este portfolio no necesita nada de eso, así que Astro genera HTML
+plano. Resultado: carga instantánea, hosting gratis para siempre en GitHub Pages, y nada
+que se pueda romper por su cuenta.
 
 ---
 
@@ -191,8 +216,10 @@ En orden de lo que más te va a servir:
 
 1. Rellenar todos los `TODO` con datos reales, sobre todo los resultados con números.
 2. Conectar el formulario a n8n.
-3. Añadir capturas de pantalla de AVPINOX y de tu segunda web (las imágenes van en
-   `public/` y se referencian desde el JSON).
+3. Añadir capturas de la app de calendario y del flujo de n8n. Las imágenes van en
+   `public/imagenes/` y se referencian desde el JSON con `imagenClara` e `imagenOscura`
+   (dos versiones para que la captura pegue con el tema del visitante; si solo pones una,
+   déjala en las dos claves).
 4. Comprar un dominio propio.
-5. Añadir un testimonio del cliente de AVPINOX, aunque sean dos frases por WhatsApp. Es
-   lo que más convence a un cliente nuevo.
+5. Pedirle a Aarón dos frases como testimonio cuando le entregues la web. Es lo que más
+   convence a un cliente nuevo.

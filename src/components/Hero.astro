@@ -1,5 +1,5 @@
 ---
-import Icono from './Icono.astro';
+import { Icon } from 'astro-icon/components';
 import { seccion, type Idioma } from '../lib/i18n';
 
 interface Props {
@@ -9,57 +9,40 @@ interface Props {
 const { lang, t } = Astro.props;
 ---
 
-<section class="relative overflow-hidden px-5 pb-20 pt-32 sm:px-8 sm:pb-28 sm:pt-40">
-  <!-- Resplandor decorativo del fondo -->
+<section class="relative overflow-hidden px-5 pb-20 pt-28 sm:px-8 sm:pb-28">
+  <!-- Halo del color de marca, muy tenue. No es un degradado decorativo:
+       solo levanta el fondo detrás del titular. -->
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-acento/12 blur-[120px]"
+    class="pointer-events-none absolute -top-56 left-0 h-[30rem] w-[30rem] rounded-full bg-acento/10 blur-[130px]"
   >
   </div>
 
-  <div class="relative mx-auto max-w-4xl">
-    <p class="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-acento">
-      {t.hero.kicker}
-    </p>
-
+  <div class="relative mx-auto max-w-6xl">
     <h1
-      class="max-w-3xl text-balance text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl"
+      class="max-w-4xl text-balance text-4xl leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl"
     >
       {t.hero.titulo}
     </h1>
 
-    <p class="mt-7 max-w-2xl text-pretty text-lg leading-relaxed text-apagado">
+    <p class="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-apagado">
       {t.hero.subtitulo}
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-3">
       <a
         href={seccion(lang, 'contacto')}
-        class="group inline-flex items-center gap-2 rounded-full bg-acento px-6 py-3 text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5"
+        class="group inline-flex items-center gap-2 rounded-full bg-acento px-6 py-3 text-sm font-semibold text-acento-sobre transition-transform hover:-translate-y-0.5"
       >
         {t.hero.ctaPrimario}
-        <Icono nombre="flecha" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        <Icon name="ph:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </a>
       <a
         href={seccion(lang, 'proyectos')}
-        class="inline-flex items-center rounded-full border border-borde px-6 py-3 text-sm font-medium text-texto transition-colors hover:border-acento hover:text-acento"
+        class="inline-flex items-center rounded-full border border-borde-fuerte px-6 py-3 text-sm font-medium transition-colors hover:border-acento hover:text-acento"
       >
         {t.hero.ctaSecundario}
       </a>
     </div>
-
-    <dl class="mt-16 grid max-w-lg grid-cols-3 gap-6 border-t border-borde pt-8">
-      {
-        t.hero.stats.map((s: any) => (
-          <div>
-            <dt class="sr-only">{s.label}</dt>
-            <dd>
-              <span class="block text-3xl font-semibold tracking-tight">{s.valor}</span>
-              <span class="mt-1 block text-xs leading-snug text-apagado">{s.label}</span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
   </div>
 </section>

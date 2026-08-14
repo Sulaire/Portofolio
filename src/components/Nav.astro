@@ -14,15 +14,17 @@ const enlaces = [
 ];
 ---
 
+<!-- Testigo invisible: cuando deja de verse, es que ya se ha hecho scroll.
+     Se detecta con IntersectionObserver, no escuchando el evento `scroll`,
+     que dispara en cada fotograma y da tirones. -->
+<div id="testigo" aria-hidden="true" class="absolute top-0 h-6 w-px"></div>
+
 <header
   id="barra"
   class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300"
 >
   <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-    <a
-      href={inicio(lang)}
-      class="text-sm font-semibold tracking-tight text-texto transition-colors hover:text-acento"
-    >
+    <a href={inicio(lang)} class="text-sm font-semibold tracking-tight transition-colors hover:text-acento">
       Jordi<span class="text-acento">.</span>
     </a>
 
@@ -40,9 +42,7 @@ const enlaces = [
     </div>
 
     <div class="flex items-center gap-3">
-      <div
-        class="flex items-center rounded-full border border-borde bg-superficie/70 p-0.5 backdrop-blur"
-      >
+      <div class="flex items-center rounded-full border border-borde bg-superficie/80 p-0.5 backdrop-blur">
         {
           idiomas.map((codigo) => (
             <a
@@ -52,7 +52,7 @@ const enlaces = [
               class:list={[
                 'rounded-full px-2.5 py-1 text-xs font-medium transition-colors',
                 codigo === lang
-                  ? 'bg-acento text-tinta'
+                  ? 'bg-acento text-acento-sobre'
                   : 'text-apagado hover:text-texto',
               ]}
             >
@@ -64,7 +64,7 @@ const enlaces = [
 
       <a
         href={seccion(lang, 'contacto')}
-        class="hidden rounded-full border border-borde px-4 py-1.5 text-sm font-medium text-texto transition-colors hover:border-acento hover:text-acento sm:inline-block"
+        class="hidden whitespace-nowrap rounded-full border border-borde-fuerte px-4 py-1.5 text-sm font-medium transition-colors hover:border-acento hover:text-acento sm:inline-block"
       >
         {t.nav.cta}
       </a>
@@ -75,28 +75,16 @@ const enlaces = [
         aria-controls="menu-movil"
         aria-expanded="false"
         aria-label={t.nav.servicios}
-        class="flex h-8 w-8 items-center justify-center rounded-full border border-borde text-texto transition-colors hover:border-acento md:hidden"
+        class="flex h-8 w-8 items-center justify-center rounded-full border border-borde-fuerte transition-colors hover:border-acento md:hidden"
       >
-        <svg
-          class="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M4 7h16M4 12h16M4 17h16" />
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
         </svg>
       </button>
     </div>
   </nav>
 
-  <div
-    id="menu-movil"
-    hidden
-    class="border-t border-borde bg-tinta/95 backdrop-blur-md md:hidden"
-  >
+  <div id="menu-movil" hidden class="border-t border-borde bg-fondo/95 backdrop-blur-md md:hidden">
     <div class="flex flex-col px-5 py-2">
       {
         [...enlaces, { id: 'contacto', texto: t.nav.cta }].map((e) => (
@@ -113,27 +101,31 @@ const enlaces = [
 </header>
 
 <script>
-  // La barra se vuelve opaca en cuanto haces un poco de scroll.
   const barra = document.getElementById('barra');
-  const alScrollear = () => {
-    if (!barra) return;
-    const activa = window.scrollY > 24;
-    barra.classList.toggle('bg-tinta/85', activa);
-    barra.classList.toggle('backdrop-blur-md', activa);
-    barra.classList.toggle('border-borde', activa);
-  };
-  alScrollear();
-  window.addEventListener('scroll', alScrollear, { passive: true });
+  const testigo = document.getElementById('testigo');
+
+  if (barra && testigo) {
+    new IntersectionObserver(
+      ([entrada]) => {
+        const scrolleado = !entrada.isIntersecting;
+        barra.classList.toggle('bg-fondo/85', scrolleado);
+        barra.classList.toggle('backdrop-blur-md', scrolleado);
+        barra.classList.toggle('border-borde', scrolleado);
+      },
+      { threshold: 0 },
+    ).observe(testigo);
+  }
 
   // Menú desplegable en móvil.
   const boton = document.getElementById('boton-menu');
   const menu = document.getElementById('menu-movil');
+
   boton?.addEventListener('click', () => {
     const abierto = boton.getAttribute('aria-expanded') === 'true';
     boton.setAttribute('aria-expanded', String(!abierto));
     if (menu) menu.hidden = abierto;
   });
-  // Al pulsar un enlace, se cierra.
+
   menu?.querySelectorAll('a').forEach((enlace) =>
     enlace.addEventListener('click', () => {
       boton?.setAttribute('aria-expanded', 'false');

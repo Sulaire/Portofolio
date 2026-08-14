@@ -1,5 +1,5 @@
 ---
-import Icono from './Icono.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   t: any;
@@ -15,15 +15,15 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
 <section id="contacto" class="border-t border-borde px-5 py-24 sm:px-8">
   <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="aparece">
-      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">{t.contacto.titulo}</h2>
+      <h2 class="text-3xl tracking-tight sm:text-4xl">{t.contacto.titulo}</h2>
       <p class="mt-4 max-w-md text-pretty leading-relaxed text-apagado">{t.contacto.intro}</p>
 
-      <p class="mt-8 border-l-2 border-acento/50 pl-4 text-sm italic leading-relaxed text-acento-suave">
+      <p class="mt-8 border-l-2 border-acento/50 pl-4 text-sm leading-relaxed text-acento">
         {t.contacto.guino}
       </p>
 
       <div class="mt-8">
-        <p class="text-xs uppercase tracking-[0.15em] text-apagado">{t.contacto.emailLabel}</p>
+        <p class="text-sm font-medium">{t.contacto.emailLabel}</p>
         <a
           href={`mailto:${t.contacto.email}`}
           class="mt-1.5 inline-block text-lg font-medium text-texto underline decoration-acento decoration-2 underline-offset-4 transition-colors hover:text-acento"
@@ -35,7 +35,7 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
 
     <form
       id="formulario-contacto"
-      class="aparece space-y-5 rounded-2xl border border-borde bg-superficie p-7 sm:p-8"
+      class="aparece space-y-5 rounded-tarjeta border border-borde bg-superficie p-7 sm:p-8"
       data-webhook={webhook}
       data-email={t.contacto.email}
       data-lang={lang}
@@ -51,7 +51,7 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
           name="nombre"
           required
           autocomplete="name"
-          class="mt-2 w-full rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+          class="mt-2 w-full rounded-chico border border-borde-campo bg-fondo px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
         />
       </div>
 
@@ -63,7 +63,7 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
           name="email"
           required
           autocomplete="email"
-          class="mt-2 w-full rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+          class="mt-2 w-full rounded-chico border border-borde-campo bg-fondo px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
         />
       </div>
 
@@ -75,7 +75,7 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
           rows="5"
           required
           placeholder={t.contacto.campos.mensajePlaceholder}
-          class="mt-2 w-full resize-y rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+          class="mt-2 w-full resize-y rounded-chico border border-borde-campo bg-fondo px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
         ></textarea>
       </div>
 
@@ -87,17 +87,17 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
 
       <button
         type="submit"
-        class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-acento px-6 py-3 text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
+        class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-acento px-6 py-3 text-sm font-semibold text-acento-sobre transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
       >
         <span data-texto-boton>{t.contacto.boton}</span>
-        <Icono nombre="flecha" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        <Icon name="ph:arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </button>
 
       <p
         data-aviso
         role="status"
         aria-live="polite"
-        class="hidden rounded-lg px-3.5 py-2.5 text-sm"
+        class="hidden rounded-chico px-3.5 py-2.5 text-sm"
       >
       </p>
 
@@ -122,8 +122,8 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
     const mostrar = (texto: string, ok: boolean) => {
       aviso.textContent = texto;
       aviso.className = ok
-        ? 'rounded-lg border border-acento/40 bg-acento/10 px-3.5 py-2.5 text-sm text-acento-suave'
-        : 'rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-sm text-red-300';
+        ? 'rounded-chico border border-acento/50 bg-acento-tenue px-3.5 py-2.5 text-sm text-acento'
+        : 'rounded-chico border border-error/40 bg-error/10 px-3.5 py-2.5 text-sm text-error';
     };
 
     form.addEventListener('submit', async (evento) => {
@@ -140,7 +140,7 @@ const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
 
       // Sin webhook configurado todavía: abrimos el correo del visitante.
       if (!webhook) {
-        const asunto = encodeURIComponent(`Web — ${datos.nombre}`);
+        const asunto = encodeURIComponent(`Web: ${datos.nombre}`);
         const cuerpo = encodeURIComponent(`${datos.mensaje}\n\n${datos.nombre} · ${datos.email}`);
         window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
         return;

@@ -1,46 +1,31 @@
 {
   "meta": {
     "lang": "zh",
-    "titulo": "Jordi — 为中小企业提供网站与自动化",
-    "descripcion": "我做能带来客户的网站，也把占用你时间的重复流程自动化。定制网站、n8n 自动化流程，以及与你现有工具的 API 对接。"
+    "titulo": "Jordi. 面向中小企业的 n8n 流程自动化与 AI 集成",
+    "descripcion": "专注于 n8n 流程自动化与 AI 集成，服务中小企业。把你现有的工具连起来，去掉重复性工作，并交付支撑这一切的网站。"
   },
   "nav": {
     "servicios": "服务",
     "proyectos": "项目",
     "sobreMi": "关于我",
     "contacto": "联系",
-    "cta": "联系我"
+    "cta": "说说你的情况"
   },
   "hero": {
-    "kicker": "网站开发 · 流程自动化",
-    "titulo": "我做能带来客户的网站，也把占用你时间的工作自动化。",
-    "subtitulo": "我的客户是生意已经跑得起来、但每周都被重复性工作占掉几个小时的中小企业和自由职业者。我把这些工作变成能自动运行的流程。",
-    "ctaPrimario": "聊聊你的项目",
-    "ctaSecundario": "查看项目",
-    "stats": [
-      { "valor": "2", "label": "个已交付网站" },
-      { "valor": "1", "label": "个项目已售出" },
-      { "valor": "3", "label": "种工作语言" }
-    ]
+    "titulo": "把你还在手工做的事情，交给自动化。",
+    "subtitulo": "专注 n8n 流程自动化与 AI 集成，服务中小企业。网站的设计与交付也一并负责。",
+    "ctaPrimario": "说说你的情况",
+    "ctaSecundario": "查看项目"
   },
   "servicios": {
     "titulo": "我能帮你做什么",
-    "intro": "三种合作方式，可以组合。多数客户先做网站，之后再做自动化。",
+    "intro": "三项可以组合。多数客户先从最耗时间的那个流程入手，再逐步展开。",
     "items": [
       {
-        "icono": "web",
-        "titulo": "定制网站",
-        "descripcion": "加载快、做工细的网站，目的很明确：让访客真正采取行动——联系你、预约或下单。",
-        "bullets": [
-          "原创设计，不用通用模板",
-          "秒开的加载速度和扎实的 SEO 基础",
-          "手机端体验完整，因为绝大多数访客来自手机"
-        ]
-      },
-      {
-        "icono": "automatizacion",
-        "titulo": "n8n 自动化",
-        "descripcion": "那些你每周、每季度都要重复一遍的手工流程，重新搭建成自动运行且不出错的流程。",
+        "icono": "ph:flow-arrow",
+        "titulo": "n8n 流程自动化",
+        "destacado": true,
+        "descripcion": "那些你每周、每季度都要重复一遍的流程，重新搭建成自动运行、也不需要任何人记着的流程。",
         "bullets": [
           "发票、报表、提醒和数据流转",
           "出问题会主动通知你，不会拖到最后才发现",
@@ -48,13 +33,23 @@
         ]
       },
       {
-        "icono": "integracion",
-        "titulo": "系统对接与 API",
-        "descripcion": "把你已经在用的工具连起来，让它们不再各自为政，而是互相传递数据。",
+        "icono": "ph:sparkle",
+        "titulo": "AI 集成",
+        "destacado": false,
+        "descripcion": "把 AI 用在真正能省事的地方：邮件分类、文档摘要、回复草稿。",
         "bullets": [
-          "Google Drive、Sheets、Gmail 和 Calendar",
-          "表单、CRM 和支付网关",
-          "数据迁移，过程中不丢失任何内容"
+          "接入你自己的数据，而不是一个通用聊天机器人",
+          "对什么该自动化、什么不该，有判断"
+        ]
+      },
+      {
+        "icono": "ph:browsers",
+        "titulo": "定制网站",
+        "destacado": false,
+        "descripcion": "加载快、无障碍达标的网站，目的很明确：让访客真正采取行动——联系你、打电话或索取报价。",
+        "bullets": [
+          "原创设计，不用通用模板",
+          "手机端体验完整，因为绝大多数访客来自手机"
         ]
       }
     ]
@@ -64,56 +59,73 @@
     "intro": "每个项目都按同样的方式讲：问题是什么、我做了什么、之后有什么改变。",
     "items": [
       {
-        "nombre": "AVPINOX",
-        "tipo": "企业网站",
-        "estado": "已售出并上线",
-        "destacado": true,
-        "resumen": "从设计、开发到交付给付费客户的企业网站，目前已上线并在日常使用中。",
-        "problema": "TODO: 客户之前的情况是什么？这给他们造成了什么损失？",
-        "solucion": "TODO: 你具体做了什么——栏目、产品目录、询价表单、后台编辑……",
-        "resultado": "TODO: 最重要的部分。任何真实数据都放在这里。",
-        "stack": ["网页设计", "前端开发", "托管与域名"],
-        "enlace": "https://avpinox.com",
-        "enlaceLabel": "访问网站"
-      },
-      {
-        "nombre": "TODO: 你的第二个网站",
-        "tipo": "网站",
-        "estado": "已上线",
-        "destacado": false,
-        "resumen": "TODO: 一句话说明它是什么、为谁而做。",
-        "problema": "TODO: 客户需要什么，为什么。",
-        "solucion": "TODO: 你做了什么。",
-        "resultado": "TODO: 客户因此获得了什么。",
-        "stack": ["TODO", "TODO"],
+        "nombre": "AVP_INOX",
+        "tipo": "焊接工坊网站",
+        "estado": "已售出并上线运行",
+        "resumen": "为西班牙瓜尔多一家焊接与金属加工工坊做的完整网站。在客户完全不知情的情况下全部做完，交付时直接呈现成品并成交。",
+        "problema": "一家位于乡村地区的新工坊，没有网站，全部业务展示都在 Instagram 上。附近想找焊工的人搜不到它，生意都流向了城里。",
+        "solucion": "单页网站，涵盖四条业务线、服务范围、悬浮 WhatsApp 按钮，以及可上传照片的报价表单。配合结构化数据做本地 SEO，让它能出现在周边搜索结果里。开发期间不允许被索引，以便交付时是完整成品。",
+        "resultado": "在生产构建、移动端下实测：性能 98-99，无障碍、最佳实践与 SEO 均为 100。目前已上线，仍待接入自有域名并与客户敲定文案。",
+        "metricas": [
+          { "valor": "99", "label": "性能" },
+          { "valor": "100", "label": "无障碍" },
+          { "valor": "100", "label": "最佳实践" },
+          { "valor": "100", "label": "SEO" }
+        ],
+        "metricasNota": "Lighthouse，移动端，生产构建",
+        "stack": ["Next.js", "防垃圾表单", "本地 SEO", "Railway"],
+        "imagenClara": "imagenes/avpinox-claro.png",
+        "imagenOscura": "imagenes/avpinox-oscuro.png",
+        "imagenAlt": "AVP_INOX 网站首页，标题为「焊接与金属加工」，背景是拉丝钢面",
         "enlace": "",
         "enlaceLabel": "访问网站"
       },
       {
         "nombre": "发票自动归集系统",
-        "tipo": "自动化",
+        "tipo": "流程自动化",
         "estado": "运行中",
-        "destacado": true,
         "resumen": "一套 n8n 流程：自动收取发票、归档到 Google Drive，并在每个季度结束时打包发送给会计事务所。不需要任何人去记这件事。",
-        "problema": "每到季度结账，都是同一套流程：在邮箱里翻发票、一份份下载、重命名、核对有没有遗漏，然后全部发给会计。既繁琐又容易拖延，也容易出错。",
-        "solucion": "我用 n8n 搭建了一套接入 Google API 的流程。它会自动识别收到的发票，按统一命名规则存入 Drive 并登记台账。季度结束时自动汇总整个周期的发票，一封邮件发送给会计事务所。",
-        "resultado": "TODO: 最有说服力的数字。每季度节省多少小时？处理多少张发票？是否彻底杜绝了漏交？",
+        "problema": "每到季度结账都是同一套流程：在邮箱里翻发票、一份份下载、重命名、核对有没有遗漏，然后全部发给会计。既繁琐又容易拖延，也容易出错。",
+        "solucion": "用 n8n 搭建的流程，接入 Google API。自动识别收到的发票，按统一命名规则存入 Drive 并登记台账。季度结束时汇总整个周期，一封邮件自动发送给会计事务所。",
+        "resultado": "TODO: 最有说服力的数字。每季度节省多少小时？每年处理多少张发票？是否彻底杜绝了漏交？估算值也可以。",
+        "metricas": [],
+        "metricasNota": "",
         "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
         "enlace": "",
-        "enlaceLabel": "查看流程"
+        "enlaceLabel": ""
+      },
+      {
+        "nombre": "共享日历与任务应用",
+        "tipo": "全栈应用",
+        "estado": "开发中",
+        "resumen": "拥有独立服务端、数据库和账号体系的完整应用。起点是一个真实的个人需求，后来成了所有做法先行验证、再用到客户项目上的试验场。",
+        "problema": "要在不同时区的两个人之间协调日历、任务和计划，其中一人在中国。市面上的现成方案都依赖 Google 服务，而在那边无法稳定访问。",
+        "solucion": "自建密码与会话认证，刻意不依赖任何外部登录服务，正是因为在中国无法保证第三方 API 的可达性。数据库配有自动备份与定期凭据轮换。界面支持西班牙语、英语和中文，日期与格式交由浏览器本身处理，而不是手写的对照表。",
+        "resultado": "十一个独立模块、带版本的 API，关键路由均有测试覆盖。这证明这套做法撑得起比单页网站更大的东西。",
+        "metricas": [],
+        "metricasNota": "",
+        "stack": ["PostgreSQL", "自建 API", "三种语言", "自动备份与轮换"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
+        "enlace": "",
+        "enlaceLabel": ""
       }
     ],
     "etiquetas": {
       "problema": "问题",
-      "solucion": "我的方案",
+      "solucion": "我做了什么",
       "resultado": "结果"
     }
   },
   "sobreMi": {
     "titulo": "关于我",
     "parrafos": [
-      "TODO: 用你自己的语气写两三句话。你是怎么入行的、喜欢解决什么样的问题、以及别人为什么可以把项目交给你。",
-      "我可以用西班牙语、英语和中文工作，能够从头到尾独立推进项目，语言不会成为障碍。"
+      "TODO: 用你自己的语气写两三句话。你是怎么走到今天这一步的，以及别人为什么可以把项目交给你。人们雇的是人，不是简历。",
+      "我擅长的是看出一家企业的时间都花在了哪里，在动手之前就预判哪里会出问题，然后把它做成能长期跑下去的东西。我可以用西班牙语、英语和中文工作，能够从头到尾独立推进项目，语言不会成为障碍。"
     ],
     "idiomasTitulo": "语言",
     "idiomas": [
@@ -121,13 +133,22 @@
       { "nombre": "英语", "nivel": "C2" },
       { "nombre": "中文", "nivel": "HSK 4" }
     ],
-    "herramientasTitulo": "技术工具",
-    "herramientas": ["n8n", "Google APIs", "HTML / CSS", "JavaScript", "Astro", "Git"]
+    "herramientasTitulo": "我使用的工具",
+    "herramientas": [
+      "n8n",
+      "Google APIs",
+      "AI 集成",
+      "Next.js",
+      "Astro",
+      "PostgreSQL",
+      "Railway",
+      "Vercel"
+    ]
   },
   "contacto": {
     "titulo": "聊聊你的项目",
     "intro": "告诉我你的需求，我会回复我的思路、时间安排和报价。不收费，也不绕弯子。",
-    "guino": "顺便一提：这个表单就是用 n8n 驱动的——正是我会为你搭建的那类东西。",
+    "guino": "顺便一提：这个表单就是用 n8n 驱动的，正是我会为你搭建的那类东西。",
     "campos": {
       "nombre": "你的称呼",
       "email": "你的邮箱",
@@ -139,7 +160,7 @@
     "exito": "已收到你的消息，我会在 24 小时内回复。",
     "error": "发送失败。可以直接发邮件给我：",
     "email": "jordi1y2trabajos@gmail.com",
-    "emailLabel": "或者直接发邮件给我："
+    "emailLabel": "或者直接发邮件给我"
   },
   "footer": {
     "derechos": "保留所有权利。",

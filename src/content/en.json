@@ -1,106 +1,118 @@
 {
   "meta": {
     "lang": "en",
-    "titulo": "Jordi — Websites and automation for small businesses",
-    "descripcion": "I build websites that sell and automate the processes that eat your time. Custom sites, n8n automation and integrations with the APIs you already use."
+    "titulo": "Jordi. n8n automation and AI integration for small businesses",
+    "descripcion": "n8n automation specialist and AI integrator for small businesses. I connect your tools, remove the repetitive work, and deliver the website that supports it."
   },
   "nav": {
     "servicios": "Services",
     "proyectos": "Work",
     "sobreMi": "About",
     "contacto": "Contact",
-    "cta": "Get in touch"
+    "cta": "Tell me about it"
   },
   "hero": {
-    "kicker": "Web development · Automation",
-    "titulo": "I build websites that sell and automate the work that steals your time.",
-    "subtitulo": "I work with small businesses and freelancers whose business already works, but who lose hours every week to repetitive tasks. I turn those into processes that run on their own.",
-    "ctaPrimario": "Tell me about your project",
-    "ctaSecundario": "See my work",
-    "stats": [
-      { "valor": "2", "label": "sites delivered" },
-      { "valor": "1", "label": "project sold to a client" },
-      { "valor": "3", "label": "working languages" }
-    ]
+    "titulo": "I automate what your business still does by hand.",
+    "subtitulo": "n8n automation specialist and AI integrator for small businesses. I design and deliver the website too.",
+    "ctaPrimario": "Tell me about it",
+    "ctaSecundario": "See my work"
   },
   "servicios": {
     "titulo": "How I can help",
-    "intro": "Three ways to work together. They combine well — most people start with the website and automate afterwards.",
+    "intro": "These combine well. Most people start with whatever process eats the most time and go from there.",
     "items": [
       {
-        "icono": "web",
-        "titulo": "Custom websites",
-        "descripcion": "Fast, well-crafted sites built so visitors actually do something: write to you, book or buy.",
-        "bullets": [
-          "Original design, no generic templates",
-          "Instant load times and solid SEO foundations",
-          "Looks right on mobile, which is where almost everyone arrives"
-        ]
-      },
-      {
-        "icono": "automatizacion",
+        "icono": "ph:flow-arrow",
         "titulo": "n8n automation",
-        "descripcion": "That manual process you repeat every week or every quarter, rebuilt so it happens on its own and without mistakes.",
+        "destacado": true,
+        "descripcion": "That process you repeat every week or every quarter, rebuilt so it happens on its own and nobody has to remember it.",
         "bullets": [
           "Invoices, reports, alerts and data hand-offs",
-          "You get notified if something breaks — no nasty surprises",
+          "You get told if something breaks, no nasty surprises",
           "Documented, so you know what it does and why"
         ]
       },
       {
-        "icono": "integracion",
-        "titulo": "Integrations and APIs",
-        "descripcion": "I connect the tools you already use so they stop being islands and start passing data to each other.",
+        "icono": "ph:sparkle",
+        "titulo": "AI integration",
+        "destacado": false,
+        "descripcion": "Putting AI where it genuinely saves work: sorting email, summarising documents, drafting replies.",
         "bullets": [
-          "Google Drive, Sheets, Gmail and Calendar",
-          "Forms, CRMs and payment gateways",
-          "Data migration without losing anything on the way"
+          "Wired into your own data, not a generic chatbot",
+          "With judgement about what is worth automating and what is not"
+        ]
+      },
+      {
+        "icono": "ph:browsers",
+        "titulo": "Custom websites",
+        "destacado": false,
+        "descripcion": "Fast, accessible sites built so visitors actually do something: write, call, or ask for a quote.",
+        "bullets": [
+          "Original design, no generic templates",
+          "Right on mobile, which is where almost everyone arrives"
         ]
       }
     ]
   },
   "proyectos": {
     "titulo": "Selected work",
-    "intro": "Every project told the same way: what the problem was, what I built, and what changed afterwards.",
+    "intro": "Each one told the same way: what the problem was, what I built, and what changed afterwards.",
     "items": [
       {
-        "nombre": "AVPINOX",
-        "tipo": "Corporate website",
-        "estado": "Sold and live",
-        "destacado": true,
-        "resumen": "Corporate website designed, developed and delivered to a paying client. Published and in daily use.",
-        "problema": "TODO: what did the client have before? What was that costing them?",
-        "solucion": "TODO: what exactly you built — sections, catalogue, quote form, editable panel...",
-        "resultado": "TODO: the most important part. Any real number belongs here.",
-        "stack": ["Web design", "Frontend development", "Hosting and domain"],
-        "enlace": "https://avpinox.com",
-        "enlaceLabel": "Visit the site"
-      },
-      {
-        "nombre": "TODO: your second website",
-        "tipo": "Website",
-        "estado": "Live",
-        "destacado": false,
-        "resumen": "TODO: one line on what it is and who it's for.",
-        "problema": "TODO: what they needed and why.",
-        "solucion": "TODO: what you built.",
-        "resultado": "TODO: what they got out of it.",
-        "stack": ["TODO", "TODO"],
+        "nombre": "AVP_INOX",
+        "tipo": "Website for a welding workshop",
+        "estado": "Sold and in production",
+        "resumen": "A complete website for a welding and metalwork shop in Guardo, rural Spain. Built in full before the client ever saw it, and sold by presenting it finished.",
+        "problema": "A new workshop in a rural area with no website and its whole presence on Instagram. Anyone searching for a welder nearby could not find it, and the work went to the city instead.",
+        "solucion": "A single-page site covering its four service lines, coverage area, a floating WhatsApp button and a quote form with photo attachment. Local SEO with structured data so it surfaces in nearby searches. Built in stealth, unindexed, so it could be handed over finished.",
+        "resultado": "Measured on mobile against a production build: 98-99 for performance, and 100 for accessibility, best practices and SEO. It is live; the custom domain and a copy pass with the client are still pending.",
+        "metricas": [
+          { "valor": "99", "label": "Performance" },
+          { "valor": "100", "label": "Accessibility" },
+          { "valor": "100", "label": "Best practices" },
+          { "valor": "100", "label": "SEO" }
+        ],
+        "metricasNota": "Lighthouse, mobile, production build",
+        "stack": ["Next.js", "Spam-hardened form", "Local SEO", "Railway"],
+        "imagenClara": "imagenes/avpinox-claro.png",
+        "imagenOscura": "imagenes/avpinox-oscuro.png",
+        "imagenAlt": "Homepage of the AVP_INOX site, headline reading Soldadura y carpintería metálica over a brushed steel surface",
         "enlace": "",
         "enlaceLabel": "Visit the site"
       },
       {
         "nombre": "Automated invoice manager",
         "tipo": "Automation",
-        "estado": "Running in production",
-        "destacado": true,
+        "estado": "Running",
         "resumen": "An n8n workflow that collects invoices, files them in Google Drive and every quarter sends them, grouped, to the accountant. Nobody has to remember.",
-        "problema": "Every quarter-end meant the same routine: hunting for invoices in the inbox, downloading them one by one, renaming them, checking none were missing and mailing the lot to the accountant. Tedious, easy to postpone, easy to get wrong.",
-        "solucion": "I built an n8n workflow wired into the Google APIs. It picks up incoming invoices, stores them in Drive with consistent naming and keeps the ledger. At quarter-end it groups the whole period and emails it to the accountant automatically.",
-        "resultado": "TODO: the number that sells it. Hours saved per quarter? Invoices handled? Missed submissions eliminated?",
+        "problema": "Every quarter-end meant the same routine: hunting for invoices in the inbox, downloading them one by one, renaming them, checking none were missing, and mailing the lot to the accountant. Tedious, easy to postpone, easy to get wrong.",
+        "solucion": "An n8n workflow wired into the Google APIs. It picks up incoming invoices, stores them in Drive with consistent naming and keeps the ledger. At quarter-end it groups the whole period and emails it to the accountant automatically.",
+        "resultado": "TODO: the number that sells it. Hours saved per quarter? Invoices handled per year? Missed submissions eliminated? An estimate is fine.",
+        "metricas": [],
+        "metricasNota": "",
         "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
         "enlace": "",
-        "enlaceLabel": "See the workflow"
+        "enlaceLabel": ""
+      },
+      {
+        "nombre": "Shared calendar and task app",
+        "tipo": "Full-stack application",
+        "estado": "In development",
+        "resumen": "A complete application with its own server, database and account system. It started from a personal need and became the place where everything gets tested before it reaches client work.",
+        "problema": "Coordinating a calendar, tasks and plans between two people in different time zones, one of them in China. The off-the-shelf options depend on Google services, which are not reliably reachable there.",
+        "solucion": "Its own password and session authentication, deliberately free of external providers, precisely because access to third-party APIs cannot be guaranteed from China. A database with automated backups and scheduled credential rotation. Interface in Spanish, English and Chinese, with dates and formats resolved by the browser itself rather than hand-written lists.",
+        "resultado": "Eleven independent modules, a versioned API and tests over the critical routes. Proof that the approach holds up for something larger than a one-page site.",
+        "metricas": [],
+        "metricasNota": "",
+        "stack": ["PostgreSQL", "Own API", "3 languages", "Automated backups and rotation"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
+        "enlace": "",
+        "enlaceLabel": ""
       }
     ],
     "etiquetas": {
@@ -112,34 +124,43 @@
   "sobreMi": {
     "titulo": "About me",
     "parrafos": [
-      "TODO: two or three sentences in your own voice. How you got started, what you enjoy solving, and why someone should trust you with their project.",
-      "I work in Spanish, English and Chinese, so I can carry a project end to end without language getting in the way."
+      "TODO: two or three sentences in your own voice. How you got here and why someone should trust you with their project. People hire people, not CVs.",
+      "What I am good at is spotting where a business loses its time, anticipating what will break before it gets built, and leaving it running. I work in Spanish, English and Chinese, so I can carry a project end to end without language getting in the way."
     ],
     "idiomasTitulo": "Languages",
     "idiomas": [
       { "nombre": "Spanish", "nivel": "Native" },
       { "nombre": "English", "nivel": "C2" },
-      { "nombre": "中文 (Chinese)", "nivel": "HSK 4" }
+      { "nombre": "中文", "nivel": "HSK 4" }
     ],
-    "herramientasTitulo": "Tools",
-    "herramientas": ["n8n", "Google APIs", "HTML / CSS", "JavaScript", "Astro", "Git"]
+    "herramientasTitulo": "What I work with",
+    "herramientas": [
+      "n8n",
+      "Google APIs",
+      "AI integration",
+      "Next.js",
+      "Astro",
+      "PostgreSQL",
+      "Railway",
+      "Vercel"
+    ]
   },
   "contacto": {
     "titulo": "Let's talk about your project",
-    "intro": "Tell me what you need and I'll come back with how I'd approach it, a timeline and a price. No commitment, no runaround.",
-    "guino": "By the way: this form runs on n8n. Exactly the kind of thing I'd build for you.",
+    "intro": "Tell me what you need and I'll come back with how I would approach it, a timeline and a price. No commitment, no runaround.",
+    "guino": "By the way: this form runs on n8n. Exactly the kind of thing I would build for you.",
     "campos": {
       "nombre": "Your name",
       "email": "Your email",
       "mensaje": "What do you need?",
-      "mensajePlaceholder": "In two lines: what you have now, and what you'd like to get to."
+      "mensajePlaceholder": "In two lines: what you have now, and what you would like to get to."
     },
     "boton": "Send message",
     "botonEnviando": "Sending...",
     "exito": "Message received. I'll get back to you within 24 hours.",
     "error": "Couldn't send it. Email me directly at",
     "email": "jordi1y2trabajos@gmail.com",
-    "emailLabel": "Or email me directly:"
+    "emailLabel": "Or email me directly"
   },
   "footer": {
     "derechos": "All rights reserved.",

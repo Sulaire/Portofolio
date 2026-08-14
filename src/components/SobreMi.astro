@@ -8,17 +8,17 @@ const { t } = Astro.props;
 ---
 
 <section id="sobre-mi" class="border-t border-borde px-5 py-24 sm:px-8">
-  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
+  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-20">
     <div class="aparece">
-      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">{t.sobreMi.titulo}</h2>
+      <h2 class="text-3xl tracking-tight sm:text-4xl">{t.sobreMi.titulo}</h2>
       <div class="mt-6 space-y-4">
         {
           t.sobreMi.parrafos.map((p: string) => (
             <p
               class:list={[
-                'text-pretty leading-relaxed',
+                'max-w-[62ch] text-pretty leading-relaxed',
                 pendiente(p)
-                  ? 'rounded-lg border border-dashed border-acento/50 bg-acento/5 p-4 text-acento-suave'
+                  ? 'rounded-chico border border-dashed border-acento/60 bg-acento-tenue p-4 text-acento'
                   : 'text-apagado',
               ]}
             >
@@ -29,17 +29,15 @@ const { t } = Astro.props;
       </div>
     </div>
 
-    <div class="aparece space-y-8 rounded-2xl border border-borde bg-superficie p-7">
+    <div class="aparece space-y-10">
       <div>
-        <h3 class="font-mono text-[11px] uppercase tracking-[0.15em] text-apagado">
-          {t.sobreMi.idiomasTitulo}
-        </h3>
-        <ul class="mt-4 space-y-3">
+        <h3 class="text-sm font-medium">{t.sobreMi.idiomasTitulo}</h3>
+        <ul class="mt-4">
           {
             t.sobreMi.idiomas.map((i: any) => (
-              <li class="flex items-baseline justify-between gap-4 border-b border-borde pb-3 last:border-0 last:pb-0">
-                <span class="text-sm font-medium">{i.nombre}</span>
-                <span class="text-xs text-acento">{i.nivel}</span>
+              <li class="flex items-baseline justify-between gap-4 border-b border-borde py-3 last:border-0">
+                <span class="text-sm text-apagado">{i.nombre}</span>
+                <span class="font-mono text-xs text-acento">{i.nivel}</span>
               </li>
             ))
           }
@@ -47,13 +45,11 @@ const { t } = Astro.props;
       </div>
 
       <div>
-        <h3 class="font-mono text-[11px] uppercase tracking-[0.15em] text-apagado">
-          {t.sobreMi.herramientasTitulo}
-        </h3>
+        <h3 class="text-sm font-medium">{t.sobreMi.herramientasTitulo}</h3>
         <div class="mt-4 flex flex-wrap gap-2">
           {
             t.sobreMi.herramientas.map((h: string) => (
-              <span class="rounded-md border border-borde bg-superficie-alta px-2.5 py-1 font-mono text-[11px] text-apagado">
+              <span class="rounded-chico border border-borde bg-superficie px-2.5 py-1 font-mono text-[11px] text-apagado">
                 {h}
               </span>
             ))

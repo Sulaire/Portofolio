@@ -1,46 +1,31 @@
 {
   "meta": {
     "lang": "es",
-    "titulo": "Jordi — Webs y automatizaciones para pymes",
-    "descripcion": "Diseño webs que venden y automatizo los procesos que te comen el tiempo. Webs a medida, automatizaciones con n8n e integraciones con las APIs que ya usas."
+    "titulo": "Jordi. Automatizaciones con n8n e IA para pymes",
+    "descripcion": "Especialista en automatizaciones con n8n e integración de IA para pymes y autónomos. Conecto tus herramientas, elimino el trabajo repetitivo y entrego la web que lo sostiene."
   },
   "nav": {
     "servicios": "Servicios",
     "proyectos": "Proyectos",
     "sobreMi": "Sobre mí",
     "contacto": "Contacto",
-    "cta": "Hablemos"
+    "cta": "Cuéntame tu caso"
   },
   "hero": {
-    "kicker": "Desarrollo web · Automatización",
-    "titulo": "Hago webs que venden y automatizo lo que te roba el tiempo.",
-    "subtitulo": "Trabajo con pymes y autónomos que tienen un negocio que funciona, pero pierden horas cada semana en tareas repetitivas. Yo las convierto en procesos que se ejecutan solos.",
+    "titulo": "Automatizo lo que tu negocio todavía hace a mano.",
+    "subtitulo": "Especialista en automatizaciones con n8n e integración de IA para pymes. También diseño y entrego la web.",
     "ctaPrimario": "Cuéntame tu caso",
-    "ctaSecundario": "Ver proyectos",
-    "stats": [
-      { "valor": "2", "label": "webs entregadas" },
-      { "valor": "1", "label": "proyecto vendido a cliente" },
-      { "valor": "3", "label": "idiomas de trabajo" }
-    ]
+    "ctaSecundario": "Ver proyectos"
   },
   "servicios": {
     "titulo": "En qué te puedo ayudar",
-    "intro": "Tres formas de trabajar juntos. Se pueden combinar: lo habitual es empezar por la web y automatizar después.",
+    "intro": "Se pueden combinar. Lo habitual es empezar por el proceso que más tiempo te come y seguir por ahí.",
     "items": [
       {
-        "icono": "web",
-        "titulo": "Webs a medida",
-        "descripcion": "Webs rápidas, cuidadas y pensadas para que el visitante haga algo: escribirte, reservar o comprar.",
-        "bullets": [
-          "Diseño propio, sin plantillas genéricas",
-          "Carga instantánea y buen posicionamiento de base",
-          "Se ve perfecta en móvil, que es por donde entra casi todo el mundo"
-        ]
-      },
-      {
-        "icono": "automatizacion",
+        "icono": "ph:flow-arrow",
         "titulo": "Automatizaciones con n8n",
-        "descripcion": "Ese proceso manual que repites cada semana o cada trimestre, montado para que ocurra solo y sin errores.",
+        "destacado": true,
+        "descripcion": "Ese proceso que repites cada semana o cada trimestre, montado para que ocurra solo y sin que se te olvide.",
         "bullets": [
           "Facturas, informes, avisos y traspasos de datos",
           "Te aviso si algo falla, no te enteras tarde",
@@ -48,44 +33,50 @@
         ]
       },
       {
-        "icono": "integracion",
-        "titulo": "Integraciones y APIs",
-        "descripcion": "Conecto las herramientas que ya usas para que dejen de ser islas y se pasen la información entre ellas.",
+        "icono": "ph:sparkle",
+        "titulo": "Integración de IA",
+        "destacado": false,
+        "descripcion": "Meter IA donde de verdad ahorra trabajo: clasificar correos, resumir documentos, redactar respuestas.",
         "bullets": [
-          "Google Drive, Sheets, Gmail y Calendar",
-          "Formularios, CRMs y pasarelas de pago",
-          "Migración de datos sin perder nada por el camino"
+          "Conectada a tus datos, no a un chat genérico",
+          "Con criterio sobre qué conviene automatizar y qué no"
+        ]
+      },
+      {
+        "icono": "ph:browsers",
+        "titulo": "Webs a medida",
+        "destacado": false,
+        "descripcion": "Webs rápidas y accesibles, pensadas para que el visitante haga algo: escribirte, llamarte o pedir presupuesto.",
+        "bullets": [
+          "Diseño propio, sin plantillas genéricas",
+          "Perfecta en móvil, que es por donde entra casi todo el mundo"
         ]
       }
     ]
   },
   "proyectos": {
     "titulo": "Proyectos",
-    "intro": "Cada proyecto contado igual: cuál era el problema, qué monté y qué cambió después.",
+    "intro": "Cada uno contado igual: cuál era el problema, qué monté y qué cambió después.",
     "items": [
       {
-        "nombre": "AVPINOX",
-        "tipo": "Web corporativa",
+        "nombre": "AVP_INOX",
+        "tipo": "Web para taller de soldadura",
         "estado": "Vendida y en producción",
-        "destacado": true,
-        "resumen": "Web corporativa diseñada, desarrollada y entregada a cliente. Está publicada y en uso.",
-        "problema": "TODO: ¿qué tenía el cliente antes? (¿nada?, ¿una web antigua?, ¿solo redes sociales?) ¿Qué le estaba costando eso?",
-        "solucion": "TODO: qué construiste exactamente — secciones, catálogo, formulario de presupuesto, panel para que editen ellos...",
-        "resultado": "TODO: lo más importante. ¿Recibe consultas que antes no llegaban? ¿Cuántas al mes? ¿Le ahorra explicar lo mismo por teléfono? Cualquier número real vale oro aquí.",
-        "stack": ["Diseño web", "Desarrollo frontend", "Hosting y dominio"],
-        "enlace": "https://avpinox.com",
-        "enlaceLabel": "Ver la web"
-      },
-      {
-        "nombre": "TODO: nombre de tu segunda web",
-        "tipo": "Web",
-        "estado": "Publicada",
-        "destacado": false,
-        "resumen": "TODO: una frase de qué es y para quién.",
-        "problema": "TODO: qué necesitaba y por qué.",
-        "solucion": "TODO: qué hiciste.",
-        "resultado": "TODO: qué consiguió con ello.",
-        "stack": ["TODO", "TODO"],
+        "resumen": "Web completa para un taller de soldadura y carpintería metálica de Guardo (Palencia). Construida entera antes de enseñársela al cliente, y vendida al presentársela terminada.",
+        "problema": "Un taller nuevo en una zona rural, sin web y con toda su presencia en Instagram. Quien buscaba un soldador en la comarca no lo encontraba, y el trabajo se iba a la ciudad.",
+        "solucion": "Web de una página con sus cuatro líneas de servicio, zona de cobertura, WhatsApp flotante y formulario de presupuesto con foto adjunta. SEO local con datos estructurados para que aparezca en las búsquedas de la zona. Se construyó en modo sigilo, sin indexar, para entregársela acabada.",
+        "resultado": "Medido en móvil sobre build de producción: 98-99 en rendimiento, y 100 en accesibilidad, buenas prácticas y SEO. Está en producción; queda conectar el dominio propio y ajustar textos con el cliente.",
+        "metricas": [
+          { "valor": "99", "label": "Rendimiento" },
+          { "valor": "100", "label": "Accesibilidad" },
+          { "valor": "100", "label": "Buenas prácticas" },
+          { "valor": "100", "label": "SEO" }
+        ],
+        "metricasNota": "Lighthouse, móvil, build de producción",
+        "stack": ["Next.js", "Formulario con antispam", "SEO local", "Railway"],
+        "imagenClara": "imagenes/avpinox-claro.png",
+        "imagenOscura": "imagenes/avpinox-oscuro.png",
+        "imagenAlt": "Portada de la web de AVP_INOX, con el titular Soldadura y carpintería metálica sobre una superficie de acero cepillado",
         "enlace": "",
         "enlaceLabel": "Ver la web"
       },
@@ -93,14 +84,35 @@
         "nombre": "Gestor automático de facturas",
         "tipo": "Automatización",
         "estado": "En funcionamiento",
-        "destacado": true,
         "resumen": "Flujo en n8n que recoge las facturas, las organiza en Google Drive y cada trimestre las envía agrupadas a la gestoría. Sin que nadie tenga que acordarse.",
-        "problema": "Cada cierre trimestral tocaba lo mismo: buscar facturas en el correo, descargarlas una a una, renombrarlas, comprobar que no faltaba ninguna y mandarlo todo a la gestoría. Un trabajo tedioso, fácil de posponer y fácil de hacer mal.",
-        "solucion": "Monté un flujo en n8n conectado a las APIs de Google. Detecta las facturas que entran, las guarda ordenadas en Drive con un nombre coherente y lleva el registro. Al cerrar el trimestre, agrupa todo el periodo y lo envía automáticamente a la gestoría en un único correo.",
-        "resultado": "TODO: el dato que lo vende. ¿Cuántas horas se ahorraban por trimestre? ¿Cuántas facturas gestiona? ¿Se ha dejado de olvidar algún envío? Aunque sea aproximado, ponlo.",
+        "problema": "Cada cierre trimestral tocaba lo mismo: buscar facturas en el correo, descargarlas una a una, renombrarlas, comprobar que no faltaba ninguna y mandarlo todo a la gestoría. Tedioso, fácil de posponer y fácil de hacer mal.",
+        "solucion": "Flujo en n8n conectado a las APIs de Google. Detecta las facturas que entran, las guarda ordenadas en Drive con un nombre coherente y lleva el registro. Al cerrar el trimestre, agrupa todo el periodo y lo envía automáticamente a la gestoría en un único correo.",
+        "resultado": "TODO: el dato que lo vende. ¿Cuántas horas te ahorrabas por trimestre? ¿Cuántas facturas gestiona al año? ¿Se ha dejado de olvidar algún envío? Aunque sea aproximado, ponlo.",
+        "metricas": [],
+        "metricasNota": "",
         "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
         "enlace": "",
-        "enlaceLabel": "Ver el flujo"
+        "enlaceLabel": ""
+      },
+      {
+        "nombre": "App de calendario y tareas compartidas",
+        "tipo": "Aplicación full-stack",
+        "estado": "En desarrollo",
+        "resumen": "Aplicación completa con su propio servidor, base de datos y sistema de cuentas. Nació de una necesidad personal y se convirtió en el proyecto donde se prueba todo lo que luego se aplica a los encargos.",
+        "problema": "Coordinar calendario, tareas y planes entre dos personas en husos horarios distintos, una de ellas en China. Las opciones del mercado dependen de servicios de Google, que allí no funcionan de forma fiable.",
+        "solucion": "Autenticación propia con contraseña y sesión, sin depender de proveedores externos, precisamente porque desde China no se puede garantizar el acceso a las APIs de terceros. Base de datos con copia de seguridad automática y rotación programada de credenciales. Interfaz en español, inglés y chino, con fechas y formatos resueltos por el propio navegador en lugar de listas escritas a mano.",
+        "resultado": "Once módulos independientes, API versionada y tests sobre las rutas críticas. Es la prueba de que el planteamiento aguanta algo más grande que una web de una página.",
+        "metricas": [],
+        "metricasNota": "",
+        "stack": ["PostgreSQL", "API propia", "3 idiomas", "Copias y rotación automáticas"],
+        "imagenClara": "",
+        "imagenOscura": "",
+        "imagenAlt": "",
+        "enlace": "",
+        "enlaceLabel": ""
       }
     ],
     "etiquetas": {
@@ -112,17 +124,26 @@
   "sobreMi": {
     "titulo": "Sobre mí",
     "parrafos": [
-      "TODO: dos o tres frases tuyas, en tu tono. Cómo empezaste, qué te gusta resolver y por qué alguien debería confiarte su proyecto. Sin postureo: la gente contrata a personas, no a currículums.",
-      "Trabajo en español, inglés y chino, así que puedo llevar un proyecto de principio a fin sin que el idioma sea un problema."
+      "TODO: dos o tres frases tuyas, en tu tono. Cómo llegaste hasta aquí y por qué alguien debería confiarte su proyecto. La gente contrata a personas, no a currículums.",
+      "Lo que se me da bien es ver dónde se va el tiempo en un negocio, anticipar por dónde va a fallar algo antes de montarlo, y dejarlo funcionando. Trabajo en español, inglés y chino, así que puedo llevar un proyecto de principio a fin sin que el idioma sea un problema."
     ],
     "idiomasTitulo": "Idiomas",
     "idiomas": [
       { "nombre": "Español", "nivel": "Nativo" },
       { "nombre": "Inglés", "nivel": "C2" },
-      { "nombre": "中文 (Chino)", "nivel": "HSK 4" }
+      { "nombre": "中文", "nivel": "HSK 4" }
     ],
-    "herramientasTitulo": "Herramientas",
-    "herramientas": ["n8n", "APIs de Google", "HTML / CSS", "JavaScript", "Astro", "Git"]
+    "herramientasTitulo": "Con qué trabajo",
+    "herramientas": [
+      "n8n",
+      "APIs de Google",
+      "Integración de IA",
+      "Next.js",
+      "Astro",
+      "PostgreSQL",
+      "Railway",
+      "Vercel"
+    ]
   },
   "contacto": {
     "titulo": "Hablemos de tu proyecto",
@@ -139,7 +160,7 @@
     "exito": "Mensaje recibido. Te respondo en menos de 24 h.",
     "error": "No se ha podido enviar. Escríbeme directamente a",
     "email": "jordi1y2trabajos@gmail.com",
-    "emailLabel": "O escríbeme directamente:"
+    "emailLabel": "O escríbeme directamente"
   },
   "footer": {
     "derechos": "Todos los derechos reservados.",

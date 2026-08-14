@@ -1,40 +1,143 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------
-   Paleta y tipografía del sitio.
-   Si quieres cambiar el color principal, toca SOLO --color-acento.
-   Todo lo demás (botones, enlaces, detalles) se actualiza solo.
-   --------------------------------------------------------------- */
-@theme {
-  --color-tinta: #0a0b0d;
-  --color-superficie: #131519;
-  --color-superficie-alta: #1b1e24;
-  --color-borde: #262a31;
-  --color-texto: #edeff2;
-  --color-apagado: #9aa3af;
-  --color-acento: #ff7a45;
-  --color-acento-suave: #ffb08a;
+/* ===================================================================
+   SISTEMA VISUAL
+   ===================================================================
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+   Un solo acento en toda la página (verde), y dos temas: claro y
+   oscuro. El tema lo elige el sistema operativo de cada visitante,
+   no hay botón: si tiene el móvil en modo oscuro, la ve oscura.
+
+   Para cambiar el color de marca, toca SOLO las dos líneas marcadas
+   con "ACENTO" más abajo (una por tema). Todo lo demás (botones,
+   enlaces, iconos, focos) se actualiza solo.
+
+   Escala de radios, y se respeta en toda la página:
+     botones      -> pastilla completa
+     tarjetas     -> --radio        (14px)
+     campos/chips -> --radio-chico  (8px)
+   =================================================================== */
+
+/* Tema claro (el de por defecto) */
+:root {
+  --fondo: #f6f7f7;
+  --superficie: #fcfcfc;
+  --superficie-alta: #edf0ef;
+  --borde: #dcdfde;
+  --borde-fuerte: #b4bab8;
+  --borde-campo: #87908d;
+  --texto: #15191a;
+  --apagado: #56605e;
+  --acento: #0d6b53; /* ACENTO (claro) */
+  --acento-sobre: #fcfcfc;
+  --acento-tenue: #e3f0ea;
+  --error: #a32218;
+  --peso-titular: 600;
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #0b0d0d;
+    --superficie: #131717;
+    --superficie-alta: #1a1f1e;
+    --borde: #262c2b;
+    --borde-fuerte: #454e4c;
+    --borde-campo: #626c6a;
+    --texto: #eceeed;
+    --apagado: #97a19e;
+    --acento: #34c99b; /* ACENTO (oscuro) */
+    --acento-sobre: #06100c;
+    --acento-tenue: #12241d;
+    --error: #ff8b7d;
+    --peso-titular: 550;
+  }
+}
+
+/* `inline` hace que las utilidades de Tailwind apunten a la variable y no
+   copien su valor, que es lo que permite que el tema cambie en caliente. */
+@theme inline {
+  --color-fondo: var(--fondo);
+  --color-superficie: var(--superficie);
+  --color-superficie-alta: var(--superficie-alta);
+  --color-borde: var(--borde);
+  --color-borde-fuerte: var(--borde-fuerte);
+  --color-borde-campo: var(--borde-campo);
+  --color-texto: var(--texto);
+  --color-apagado: var(--apagado);
+  --color-acento: var(--acento);
+  --color-acento-sobre: var(--acento-sobre);
+  --color-acento-tenue: var(--acento-tenue);
+  --color-error: var(--error);
+
+  --radius-chico: 8px;
+  --radius-tarjeta: 14px;
+
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
-  background-color: var(--color-tinta);
-  color-scheme: dark;
+  background-color: var(--fondo);
 }
 
 body {
-  background-color: var(--color-tinta);
-  color: var(--color-texto);
+  background-color: var(--fondo);
+  color: var(--texto);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Respeta a quien tiene desactivadas las animaciones en su sistema. */
+h1,
+h2,
+h3 {
+  font-weight: var(--peso-titular);
+}
+
+::selection {
+  background: var(--acento);
+  color: var(--acento-sobre);
+}
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* -------------------------------------------------------------------
+   Aparición de las secciones al entrar en pantalla.
+
+   Se hace con CSS puro (`animation-timeline: view()`), sin librería.
+   El estado por defecto es VISIBLE: si el navegador no soporta la
+   animación, o falla algo, el contenido se ve igual. Nunca al revés.
+   ------------------------------------------------------------------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aparece {
+      animation: aparecer linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -45,31 +148,4 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Aparición suave de las secciones al hacer scroll. */
-.aparece {
-  opacity: 0;
-  transform: translateY(1.25rem);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.aparece.visible {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .aparece {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-::selection {
-  background: var(--color-acento);
-  color: var(--color-tinta);
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-acento);
-  outline-offset: 3px;
 }

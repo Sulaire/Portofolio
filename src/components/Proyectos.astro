@@ -1,6 +1,6 @@
 ---
-import Icono from './Icono.astro';
-import { pendiente } from '../lib/i18n';
+import { Icon } from 'astro-icon/components';
+import { pendiente, recurso } from '../lib/i18n';
 
 interface Props {
   t: any;
@@ -13,85 +13,81 @@ const bloques = ['problema', 'solucion', 'resultado'] as const;
 <section id="proyectos" class="border-t border-borde px-5 py-24 sm:px-8">
   <div class="mx-auto max-w-6xl">
     <div class="aparece max-w-2xl">
-      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">
-        {t.proyectos.titulo}
-      </h2>
-      <p class="mt-4 text-pretty leading-relaxed text-apagado">{t.proyectos.intro}</p>
+      <h2 class="text-3xl tracking-tight sm:text-4xl">{t.proyectos.titulo}</h2>
+      <p class="mt-4 leading-relaxed text-apagado">{t.proyectos.intro}</p>
     </div>
 
-    <div class="mt-14 space-y-6">
+    <div class="mt-14 space-y-16">
       {
         t.proyectos.items.map((p: any) => (
-          <article class="aparece overflow-hidden rounded-2xl border border-borde bg-superficie">
-            <div class="border-b border-borde p-7 sm:p-9">
-              <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span class="font-mono text-xs uppercase tracking-[0.15em] text-acento">
-                  {p.tipo}
-                </span>
-                <span class="h-1 w-1 rounded-full bg-borde" aria-hidden="true" />
-                <span class="text-xs text-apagado">{p.estado}</span>
-                {p.destacado && (
-                  <span class="rounded-full bg-acento/10 px-2.5 py-0.5 text-[11px] font-medium text-acento-suave">
-                    ★
-                  </span>
-                )}
-              </div>
-
-              <h3
-                class:list={[
-                  'mt-4 text-2xl font-semibold tracking-tight sm:text-3xl',
-                  pendiente(p.nombre) && 'text-acento-suave',
-                ]}
-              >
-                {p.nombre}
-              </h3>
-
-              <p
-                class:list={[
-                  'mt-3 max-w-2xl text-pretty leading-relaxed text-apagado',
-                  pendiente(p.resumen) &&
-                    'rounded-lg border border-dashed border-acento/50 bg-acento/5 p-3 text-acento-suave',
-                ]}
-              >
-                {p.resumen}
-              </p>
-
-              <div class="mt-6 flex flex-wrap items-center gap-2">
-                {p.stack.map((s: string) => (
-                  <span class="rounded-md border border-borde bg-superficie-alta px-2.5 py-1 font-mono text-[11px] text-apagado">
-                    {s}
-                  </span>
-                ))}
-              </div>
-
-              {p.enlace && (
-                <a
-                  href={p.enlace}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-acento transition-colors hover:text-acento-suave"
-                >
-                  {p.enlaceLabel}
-                  <Icono
-                    nombre="externo"
-                    class="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5"
-                  />
-                </a>
-              )}
+          <article class="aparece">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm text-apagado">
+              <span class="text-acento">{p.tipo}</span>
+              <span>{p.estado}</span>
             </div>
 
-            <div class="grid divide-y divide-borde sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <h3
+              class:list={[
+                'mt-3 text-2xl tracking-tight sm:text-3xl',
+                pendiente(p.nombre) && 'text-acento',
+              ]}
+            >
+              {p.nombre}
+            </h3>
+
+            <p
+              class:list={[
+                'mt-4 max-w-2xl text-pretty leading-relaxed',
+                pendiente(p.resumen)
+                  ? 'rounded-chico border border-dashed border-acento/60 bg-acento-tenue p-3 text-acento'
+                  : 'text-apagado',
+              ]}
+            >
+              {p.resumen}
+            </p>
+
+            {p.imagenClara && (
+              <picture class="mt-8 block overflow-hidden rounded-tarjeta border border-borde">
+                <source
+                  srcset={recurso(p.imagenOscura)}
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src={recurso(p.imagenClara)}
+                  alt={p.imagenAlt}
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full"
+                />
+              </picture>
+            )}
+
+            {p.metricas.length > 0 && (
+              <div class="mt-8">
+                <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-tarjeta border border-borde bg-borde sm:grid-cols-4">
+                  {p.metricas.map((m: any) => (
+                    <div class="bg-superficie px-5 py-6">
+                      <dt class="text-xs leading-snug text-apagado">{m.label}</dt>
+                      <dd class="mt-1 font-mono text-3xl tracking-tight text-acento">{m.valor}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p class="mt-2.5 text-xs text-apagado">{p.metricasNota}</p>
+              </div>
+            )}
+
+            <div class="mt-10 grid gap-8 border-t border-borde pt-8 sm:grid-cols-3">
               {bloques.map((clave) => (
-                <div class="p-7 sm:p-8">
-                  <h4 class="font-mono text-[11px] uppercase tracking-[0.15em] text-apagado">
-                    {t.proyectos.etiquetas[clave]}
-                  </h4>
+                <div>
+                  <h4 class="text-sm font-medium">{t.proyectos.etiquetas[clave]}</h4>
                   <p
                     class:list={[
-                      'mt-3 text-sm leading-relaxed',
+                      'mt-2.5 text-sm leading-relaxed',
                       pendiente(p[clave])
-                        ? 'rounded-lg border border-dashed border-acento/50 bg-acento/5 p-3 text-acento-suave'
-                        : 'text-texto/85',
+                        ? 'rounded-chico border border-dashed border-acento/60 bg-acento-tenue p-3 text-acento'
+                        : 'text-apagado',
                     ]}
                   >
                     {p[clave]}
@@ -99,6 +95,29 @@ const bloques = ['problema', 'solucion', 'resultado'] as const;
                 </div>
               ))}
             </div>
+
+            <div class="mt-8 flex flex-wrap items-center gap-2">
+              {p.stack.map((s: string) => (
+                <span class="rounded-chico border border-borde bg-superficie px-2.5 py-1 font-mono text-[11px] text-apagado">
+                  {s}
+                </span>
+              ))}
+            </div>
+
+            {p.enlace && (
+              <a
+                href={p.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-acento"
+              >
+                {p.enlaceLabel}
+                <Icon
+                  name="ph:arrow-up-right"
+                  class="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5"
+                />
+              </a>
+            )}
           </article>
         ))
       }

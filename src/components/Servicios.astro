@@ -1,44 +1,66 @@
 ---
-import Icono from './Icono.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   t: any;
 }
 const { t } = Astro.props;
+
+// El primero (n8n) es la especialidad, así que ocupa la celda grande.
+// Los otros dos se apilan al lado. Tres servicios, tres celdas: la
+// rejilla nunca queda con un hueco vacío.
+const [principal, ...secundarios] = t.servicios.items;
 ---
 
 <section id="servicios" class="border-t border-borde px-5 py-24 sm:px-8">
   <div class="mx-auto max-w-6xl">
     <div class="aparece max-w-2xl">
-      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">
-        {t.servicios.titulo}
-      </h2>
-      <p class="mt-4 text-pretty leading-relaxed text-apagado">{t.servicios.intro}</p>
+      <h2 class="text-3xl tracking-tight sm:text-4xl">{t.servicios.titulo}</h2>
+      <p class="mt-4 max-w-lg text-pretty leading-relaxed text-apagado">
+        {t.servicios.intro}
+      </p>
     </div>
 
-    <div class="mt-14 grid gap-5 md:grid-cols-3">
-      {
-        t.servicios.items.map((item: any, i: number) => (
-          <article
-            class="aparece group rounded-2xl border border-borde bg-superficie p-7 transition-colors hover:border-acento/40"
-            style={`transition-delay:${i * 80}ms`}
-          >
-            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-acento/10 text-acento">
-              <Icono nombre={item.icono} class="h-5 w-5" />
-            </div>
-            <h3 class="mt-5 text-lg font-semibold tracking-tight">{item.titulo}</h3>
-            <p class="mt-2.5 text-sm leading-relaxed text-apagado">{item.descripcion}</p>
-            <ul class="mt-5 space-y-2.5 border-t border-borde pt-5">
-              {item.bullets.map((b: string) => (
-                <li class="flex gap-2.5 text-sm leading-snug text-apagado">
-                  <Icono nombre="check" class="mt-0.5 h-3.5 w-3.5 shrink-0 text-acento" />
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))
-      }
+    <div class="mt-14 grid gap-4 lg:grid-cols-5">
+      <article
+        class="aparece relative flex flex-col overflow-hidden rounded-tarjeta border border-acento/25 bg-acento-tenue p-8 lg:col-span-3 lg:p-10"
+      >
+        <Icon name={principal.icono} class="h-7 w-7 text-acento" />
+        <h3 class="mt-6 text-2xl tracking-tight">{principal.titulo}</h3>
+        <p class="mt-3 max-w-md text-pretty leading-relaxed text-apagado">
+          {principal.descripcion}
+        </p>
+        <ul class="mt-auto space-y-3 border-t border-acento/20 pt-6 sm:mt-10">
+          {
+            principal.bullets.map((b: string) => (
+              <li class="flex gap-3 text-sm leading-snug">
+                <Icon name="ph:check" class="mt-0.5 h-4 w-4 shrink-0 text-acento" />
+                <span>{b}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <div class="grid gap-4 lg:col-span-2">
+        {
+          secundarios.map((item: any) => (
+            <article class="aparece rounded-tarjeta border border-borde bg-superficie p-8 transition-colors hover:border-borde-fuerte">
+              <Icon name={item.icono} class="h-6 w-6 text-acento" />
+              <h3 class="mt-5 text-lg tracking-tight">{item.titulo}</h3>
+              <p class="mt-2.5 text-sm leading-relaxed text-apagado">{item.descripcion}</p>
+              <ul class="mt-5 space-y-2.5">
+                {item.bullets.map((b: string) => (
+                  <li class="flex gap-2.5 text-sm leading-snug text-apagado">
+                    <Icon name="ph:check" class="mt-0.5 h-3.5 w-3.5 shrink-0 text-acento" />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
