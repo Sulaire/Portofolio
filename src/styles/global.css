@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Paleta y tipografía del sitio.
+   Si quieres cambiar el color principal, toca SOLO --color-acento.
+   Todo lo demás (botones, enlaces, detalles) se actualiza solo.
+   --------------------------------------------------------------- */
+@theme {
+  --color-tinta: #0a0b0d;
+  --color-superficie: #131519;
+  --color-superficie-alta: #1b1e24;
+  --color-borde: #262a31;
+  --color-texto: #edeff2;
+  --color-apagado: #9aa3af;
+  --color-acento: #ff7a45;
+  --color-acento-suave: #ffb08a;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background-color: var(--color-tinta);
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-tinta);
+  color: var(--color-texto);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Respeta a quien tiene desactivadas las animaciones en su sistema. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Aparición suave de las secciones al hacer scroll. */
+.aparece {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.aparece.visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aparece {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+::selection {
+  background: var(--color-acento);
+  color: var(--color-tinta);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 3px;
+}

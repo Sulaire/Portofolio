@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { idiomas, inicio, recurso, type Idioma } from '../lib/i18n';
+
+interface Props {
+  lang: Idioma;
+  t: any;
+}
+const { lang, t } = Astro.props;
+
+const htmlLang = lang === 'zh' ? 'zh-CN' : lang;
+const canonica = new URL(inicio(lang), Astro.site);
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.titulo}</title>
+    <meta name="description" content={t.meta.descripcion} />
+    <link rel="canonical" href={canonica} />
+    <link rel="icon" href={recurso('favicon.svg')} type="image/svg+xml" />
+
+    {
+      idiomas.map((codigo) => (
+        <link rel="alternate" hreflang={codigo} href={new URL(inicio(codigo), Astro.site)} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(inicio('es'), Astro.site)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.meta.titulo} />
+    <meta property="og:description" content={t.meta.descripcion} />
+    <meta property="og:url" content={canonica} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0a0b0d" />
+  </head>
+
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-acento focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-tinta"
+    >
+      →
+    </a>
+
+    <Nav lang={lang} t={t} />
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <Footer t={t} />
+
+    <script>
+      // Las secciones aparecen suavemente al entrar en pantalla.
+      const observador = new IntersectionObserver(
+        (entradas) => {
+          for (const entrada of entradas) {
+            if (entrada.isIntersecting) {
+              entrada.target.classList.add('visible');
+              observador.unobserve(entrada.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px' },
+      );
+      document.querySelectorAll('.aparece').forEach((el) => observador.observe(el));
+    </script>
+  </body>
+</html>

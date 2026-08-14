@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "lang": "zh",
+    "titulo": "Jordi — 为中小企业提供网站与自动化",
+    "descripcion": "我做能带来客户的网站，也把占用你时间的重复流程自动化。定制网站、n8n 自动化流程，以及与你现有工具的 API 对接。"
+  },
+  "nav": {
+    "servicios": "服务",
+    "proyectos": "项目",
+    "sobreMi": "关于我",
+    "contacto": "联系",
+    "cta": "联系我"
+  },
+  "hero": {
+    "kicker": "网站开发 · 流程自动化",
+    "titulo": "我做能带来客户的网站，也把占用你时间的工作自动化。",
+    "subtitulo": "我的客户是生意已经跑得起来、但每周都被重复性工作占掉几个小时的中小企业和自由职业者。我把这些工作变成能自动运行的流程。",
+    "ctaPrimario": "聊聊你的项目",
+    "ctaSecundario": "查看项目",
+    "stats": [
+      { "valor": "2", "label": "个已交付网站" },
+      { "valor": "1", "label": "个项目已售出" },
+      { "valor": "3", "label": "种工作语言" }
+    ]
+  },
+  "servicios": {
+    "titulo": "我能帮你做什么",
+    "intro": "三种合作方式，可以组合。多数客户先做网站，之后再做自动化。",
+    "items": [
+      {
+        "icono": "web",
+        "titulo": "定制网站",
+        "descripcion": "加载快、做工细的网站，目的很明确：让访客真正采取行动——联系你、预约或下单。",
+        "bullets": [
+          "原创设计，不用通用模板",
+          "秒开的加载速度和扎实的 SEO 基础",
+          "手机端体验完整，因为绝大多数访客来自手机"
+        ]
+      },
+      {
+        "icono": "automatizacion",
+        "titulo": "n8n 自动化",
+        "descripcion": "那些你每周、每季度都要重复一遍的手工流程，重新搭建成自动运行且不出错的流程。",
+        "bullets": [
+          "发票、报表、提醒和数据流转",
+          "出问题会主动通知你，不会拖到最后才发现",
+          "有文档记录：你清楚它在做什么、为什么这样做"
+        ]
+      },
+      {
+        "icono": "integracion",
+        "titulo": "系统对接与 API",
+        "descripcion": "把你已经在用的工具连起来，让它们不再各自为政，而是互相传递数据。",
+        "bullets": [
+          "Google Drive、Sheets、Gmail 和 Calendar",
+          "表单、CRM 和支付网关",
+          "数据迁移，过程中不丢失任何内容"
+        ]
+      }
+    ]
+  },
+  "proyectos": {
+    "titulo": "项目案例",
+    "intro": "每个项目都按同样的方式讲：问题是什么、我做了什么、之后有什么改变。",
+    "items": [
+      {
+        "nombre": "AVPINOX",
+        "tipo": "企业网站",
+        "estado": "已售出并上线",
+        "destacado": true,
+        "resumen": "从设计、开发到交付给付费客户的企业网站，目前已上线并在日常使用中。",
+        "problema": "TODO: 客户之前的情况是什么？这给他们造成了什么损失？",
+        "solucion": "TODO: 你具体做了什么——栏目、产品目录、询价表单、后台编辑……",
+        "resultado": "TODO: 最重要的部分。任何真实数据都放在这里。",
+        "stack": ["网页设计", "前端开发", "托管与域名"],
+        "enlace": "https://avpinox.com",
+        "enlaceLabel": "访问网站"
+      },
+      {
+        "nombre": "TODO: 你的第二个网站",
+        "tipo": "网站",
+        "estado": "已上线",
+        "destacado": false,
+        "resumen": "TODO: 一句话说明它是什么、为谁而做。",
+        "problema": "TODO: 客户需要什么，为什么。",
+        "solucion": "TODO: 你做了什么。",
+        "resultado": "TODO: 客户因此获得了什么。",
+        "stack": ["TODO", "TODO"],
+        "enlace": "",
+        "enlaceLabel": "访问网站"
+      },
+      {
+        "nombre": "发票自动归集系统",
+        "tipo": "自动化",
+        "estado": "运行中",
+        "destacado": true,
+        "resumen": "一套 n8n 流程：自动收取发票、归档到 Google Drive，并在每个季度结束时打包发送给会计事务所。不需要任何人去记这件事。",
+        "problema": "每到季度结账，都是同一套流程：在邮箱里翻发票、一份份下载、重命名、核对有没有遗漏，然后全部发给会计。既繁琐又容易拖延，也容易出错。",
+        "solucion": "我用 n8n 搭建了一套接入 Google API 的流程。它会自动识别收到的发票，按统一命名规则存入 Drive 并登记台账。季度结束时自动汇总整个周期的发票，一封邮件发送给会计事务所。",
+        "resultado": "TODO: 最有说服力的数字。每季度节省多少小时？处理多少张发票？是否彻底杜绝了漏交？",
+        "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "enlace": "",
+        "enlaceLabel": "查看流程"
+      }
+    ],
+    "etiquetas": {
+      "problema": "问题",
+      "solucion": "我的方案",
+      "resultado": "结果"
+    }
+  },
+  "sobreMi": {
+    "titulo": "关于我",
+    "parrafos": [
+      "TODO: 用你自己的语气写两三句话。你是怎么入行的、喜欢解决什么样的问题、以及别人为什么可以把项目交给你。",
+      "我可以用西班牙语、英语和中文工作，能够从头到尾独立推进项目，语言不会成为障碍。"
+    ],
+    "idiomasTitulo": "语言",
+    "idiomas": [
+      { "nombre": "西班牙语", "nivel": "母语" },
+      { "nombre": "英语", "nivel": "C2" },
+      { "nombre": "中文", "nivel": "HSK 4" }
+    ],
+    "herramientasTitulo": "技术工具",
+    "herramientas": ["n8n", "Google APIs", "HTML / CSS", "JavaScript", "Astro", "Git"]
+  },
+  "contacto": {
+    "titulo": "聊聊你的项目",
+    "intro": "告诉我你的需求，我会回复我的思路、时间安排和报价。不收费，也不绕弯子。",
+    "guino": "顺便一提：这个表单就是用 n8n 驱动的——正是我会为你搭建的那类东西。",
+    "campos": {
+      "nombre": "你的称呼",
+      "email": "你的邮箱",
+      "mensaje": "你需要什么？",
+      "mensajePlaceholder": "用两句话说明：你现在的情况，以及你希望达到什么效果。"
+    },
+    "boton": "发送",
+    "botonEnviando": "发送中……",
+    "exito": "已收到你的消息，我会在 24 小时内回复。",
+    "error": "发送失败。可以直接发邮件给我：",
+    "email": "jordi1y2trabajos@gmail.com",
+    "emailLabel": "或者直接发邮件给我："
+  },
+  "footer": {
+    "derechos": "保留所有权利。",
+    "hecho": "使用 Astro 构建，托管于 GitHub Pages。"
+  }
+}

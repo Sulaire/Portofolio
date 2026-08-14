@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Servicios from './Servicios.astro';
+import Proyectos from './Proyectos.astro';
+import SobreMi from './SobreMi.astro';
+import Contacto from './Contacto.astro';
+import { contenido, type Idioma } from '../lib/i18n';
+
+interface Props {
+  lang: Idioma;
+}
+const { lang } = Astro.props;
+const t = contenido[lang];
+---
+
+<Base lang={lang} t={t}>
+  <Hero lang={lang} t={t} />
+  <Servicios t={t} />
+  <Proyectos t={t} />
+  <SobreMi t={t} />
+  <Contacto t={t} lang={lang} />
+</Base>

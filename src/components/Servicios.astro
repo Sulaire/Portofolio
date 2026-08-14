@@ -1,0 +1,44 @@
+---
+import Icono from './Icono.astro';
+
+interface Props {
+  t: any;
+}
+const { t } = Astro.props;
+---
+
+<section id="servicios" class="border-t border-borde px-5 py-24 sm:px-8">
+  <div class="mx-auto max-w-6xl">
+    <div class="aparece max-w-2xl">
+      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+        {t.servicios.titulo}
+      </h2>
+      <p class="mt-4 text-pretty leading-relaxed text-apagado">{t.servicios.intro}</p>
+    </div>
+
+    <div class="mt-14 grid gap-5 md:grid-cols-3">
+      {
+        t.servicios.items.map((item: any, i: number) => (
+          <article
+            class="aparece group rounded-2xl border border-borde bg-superficie p-7 transition-colors hover:border-acento/40"
+            style={`transition-delay:${i * 80}ms`}
+          >
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-acento/10 text-acento">
+              <Icono nombre={item.icono} class="h-5 w-5" />
+            </div>
+            <h3 class="mt-5 text-lg font-semibold tracking-tight">{item.titulo}</h3>
+            <p class="mt-2.5 text-sm leading-relaxed text-apagado">{item.descripcion}</p>
+            <ul class="mt-5 space-y-2.5 border-t border-borde pt-5">
+              {item.bullets.map((b: string) => (
+                <li class="flex gap-2.5 text-sm leading-snug text-apagado">
+                  <Icono nombre="check" class="mt-0.5 h-3.5 w-3.5 shrink-0 text-acento" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,176 @@
+---
+import Icono from './Icono.astro';
+
+interface Props {
+  t: any;
+  lang: string;
+}
+const { t, lang } = Astro.props;
+
+// La dirección del webhook de n8n se guarda fuera del código.
+// En local: archivo .env  ·  En GitHub: Settings → Secrets and variables → Actions → Variables
+const webhook = import.meta.env.PUBLIC_N8N_WEBHOOK_URL ?? '';
+---
+
+<section id="contacto" class="border-t border-borde px-5 py-24 sm:px-8">
+  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="aparece">
+      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">{t.contacto.titulo}</h2>
+      <p class="mt-4 max-w-md text-pretty leading-relaxed text-apagado">{t.contacto.intro}</p>
+
+      <p class="mt-8 border-l-2 border-acento/50 pl-4 text-sm italic leading-relaxed text-acento-suave">
+        {t.contacto.guino}
+      </p>
+
+      <div class="mt-8">
+        <p class="text-xs uppercase tracking-[0.15em] text-apagado">{t.contacto.emailLabel}</p>
+        <a
+          href={`mailto:${t.contacto.email}`}
+          class="mt-1.5 inline-block text-lg font-medium text-texto underline decoration-acento decoration-2 underline-offset-4 transition-colors hover:text-acento"
+        >
+          {t.contacto.email}
+        </a>
+      </div>
+    </div>
+
+    <form
+      id="formulario-contacto"
+      class="aparece space-y-5 rounded-2xl border border-borde bg-superficie p-7 sm:p-8"
+      data-webhook={webhook}
+      data-email={t.contacto.email}
+      data-lang={lang}
+      data-enviando={t.contacto.botonEnviando}
+      data-boton={t.contacto.boton}
+      novalidate={false}
+    >
+      <div>
+        <label for="nombre" class="block text-sm font-medium">{t.contacto.campos.nombre}</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          required
+          autocomplete="name"
+          class="mt-2 w-full rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium">{t.contacto.campos.email}</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          class="mt-2 w-full rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label for="mensaje" class="block text-sm font-medium">{t.contacto.campos.mensaje}</label>
+        <textarea
+          id="mensaje"
+          name="mensaje"
+          rows="5"
+          required
+          placeholder={t.contacto.campos.mensajePlaceholder}
+          class="mt-2 w-full resize-y rounded-lg border border-borde bg-superficie-alta px-3.5 py-2.5 text-sm text-texto placeholder:text-apagado/60 focus:border-acento focus:outline-none"
+        ></textarea>
+      </div>
+
+      <!-- Trampa antispam: los bots la rellenan, las personas no la ven. -->
+      <div class="absolute left-[-9999px]" aria-hidden="true">
+        <label for="empresa-web">No rellenar</label>
+        <input type="text" id="empresa-web" name="empresa-web" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button
+        type="submit"
+        class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-acento px-6 py-3 text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
+      >
+        <span data-texto-boton>{t.contacto.boton}</span>
+        <Icono nombre="flecha" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <p
+        data-aviso
+        role="status"
+        aria-live="polite"
+        class="hidden rounded-lg px-3.5 py-2.5 text-sm"
+      >
+      </p>
+
+      <p class="sr-only" data-exito>{t.contacto.exito}</p>
+      <p class="sr-only" data-error>{t.contacto.error}</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('formulario-contacto') as HTMLFormElement | null;
+
+  if (form) {
+    const webhook = form.dataset.webhook ?? '';
+    const email = form.dataset.email ?? '';
+    const aviso = form.querySelector('[data-aviso]') as HTMLElement;
+    const textoBoton = form.querySelector('[data-texto-boton]') as HTMLElement;
+    const boton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const msgExito = (form.querySelector('[data-exito]') as HTMLElement).textContent ?? '';
+    const msgError = (form.querySelector('[data-error]') as HTMLElement).textContent ?? '';
+
+    const mostrar = (texto: string, ok: boolean) => {
+      aviso.textContent = texto;
+      aviso.className = ok
+        ? 'rounded-lg border border-acento/40 bg-acento/10 px-3.5 py-2.5 text-sm text-acento-suave'
+        : 'rounded-lg border border-red-500/40 bg-red-500/10 px-3.5 py-2.5 text-sm text-red-300';
+    };
+
+    form.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const datos = Object.fromEntries(new FormData(form).entries());
+      // Si el campo trampa viene relleno, es un bot: fingimos que todo fue bien.
+      if (datos['empresa-web']) {
+        mostrar(msgExito, true);
+        form.reset();
+        return;
+      }
+
+      // Sin webhook configurado todavía: abrimos el correo del visitante.
+      if (!webhook) {
+        const asunto = encodeURIComponent(`Web — ${datos.nombre}`);
+        const cuerpo = encodeURIComponent(`${datos.mensaje}\n\n${datos.nombre} · ${datos.email}`);
+        window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
+        return;
+      }
+
+      boton.disabled = true;
+      textoBoton.textContent = form.dataset.enviando ?? '';
+
+      try {
+        const respuesta = await fetch(webhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: datos.nombre,
+            email: datos.email,
+            mensaje: datos.mensaje,
+            idioma: form.dataset.lang,
+            origen: window.location.href,
+            fecha: new Date().toISOString(),
+          }),
+        });
+        if (!respuesta.ok) throw new Error(String(respuesta.status));
+        mostrar(msgExito, true);
+        form.reset();
+      } catch {
+        mostrar(`${msgError} ${email}`, false);
+      } finally {
+        boton.disabled = false;
+        textoBoton.textContent = form.dataset.boton ?? '';
+      }
+    });
+  }
+</script>
