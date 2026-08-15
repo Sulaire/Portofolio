@@ -15,7 +15,29 @@
     "titulo": "I automate what your business still does by hand.",
     "subtitulo": "n8n automation specialist and AI integrator for small businesses. I design and deliver the website too.",
     "ctaPrimario": "Tell me about it",
-    "ctaSecundario": "See my work"
+    "ctaSecundario": "See my work",
+    "ficha": [
+      {
+        "etiqueta": "Focus",
+        "valor": "n8n automation and AI integration",
+        "nota": ""
+      },
+      {
+        "etiqueta": "Also",
+        "valor": "Custom websites and Google APIs",
+        "nota": ""
+      },
+      {
+        "etiqueta": "Languages",
+        "valor": "Spanish, English and Chinese",
+        "nota": ""
+      },
+      {
+        "etiqueta": "Based in",
+        "valor": "Spain",
+        "nota": "Remote"
+      }
+    ]
   },
   "servicios": {
     "titulo": "How I can help",
@@ -60,20 +82,38 @@
     "items": [
       {
         "nombre": "AVP_INOX",
-        "tipo": "Website for a welding workshop",
+        "titular": "A welding workshop in rural Spain, with local SEO and photo quotes",
+        "tipo": "Website",
         "estado": "Sold and in production",
         "resumen": "A complete website for a welding and metalwork shop in Guardo, rural Spain. Built in full before the client ever saw it, and sold by presenting it finished.",
         "problema": "A new workshop in a rural area with no website and its whole presence on Instagram. Anyone searching for a welder nearby could not find it, and the work went to the city instead.",
         "solucion": "A single-page site covering its four service lines, coverage area, a floating WhatsApp button and a quote form with photo attachment. Local SEO with structured data so it surfaces in nearby searches. Built in stealth, unindexed, so it could be handed over finished.",
         "resultado": "Measured on mobile against a production build: 98-99 for performance, and 100 for accessibility, best practices and SEO. It is live; the custom domain and a copy pass with the client are still pending.",
         "metricas": [
-          { "valor": "99", "label": "Performance" },
-          { "valor": "100", "label": "Accessibility" },
-          { "valor": "100", "label": "Best practices" },
-          { "valor": "100", "label": "SEO" }
+          {
+            "valor": "99",
+            "label": "Performance"
+          },
+          {
+            "valor": "100",
+            "label": "Accessibility"
+          },
+          {
+            "valor": "100",
+            "label": "Best practices"
+          },
+          {
+            "valor": "100",
+            "label": "SEO"
+          }
         ],
         "metricasNota": "Lighthouse, mobile, production build",
-        "stack": ["Next.js", "Spam-hardened form", "Local SEO", "Railway"],
+        "stack": [
+          "Next.js",
+          "Spam-hardened form",
+          "Local SEO",
+          "Railway"
+        ],
         "imagenClara": "imagenes/avpinox-claro.png",
         "imagenOscura": "imagenes/avpinox-oscuro.png",
         "imagenAlt": "Homepage of the AVP_INOX site, headline reading Soldadura y carpintería metálica over a brushed steel surface",
@@ -82,6 +122,7 @@
       },
       {
         "nombre": "Automated invoice manager",
+        "titular": "Each quarter's invoices reach the accountant on their own, grouped",
         "tipo": "Automation",
         "estado": "Running",
         "resumen": "An n8n workflow that collects invoices, files them in Google Drive and every quarter sends them, grouped, to the accountant. Nobody has to remember.",
@@ -90,7 +131,12 @@
         "resultado": "TODO: the number that sells it. Hours saved per quarter? Invoices handled per year? Missed submissions eliminated? An estimate is fine.",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "stack": [
+          "n8n",
+          "Google Drive API",
+          "Gmail API",
+          "Google Sheets"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -99,7 +145,8 @@
       },
       {
         "nombre": "Shared calendar and task app",
-        "tipo": "Full-stack application",
+        "titular": "Shared calendar and tasks, with its own server and database",
+        "tipo": "Full-stack app",
         "estado": "In development",
         "resumen": "A complete application with its own server, database and account system. It started from a personal need and became the place where everything gets tested before it reaches client work.",
         "problema": "Coordinating a calendar, tasks and plans between two people in different time zones, one of them in China. The off-the-shelf options depend on Google services, which are not reliably reachable there.",
@@ -107,7 +154,12 @@
         "resultado": "Eleven independent modules, a versioned API and tests over the critical routes. Proof that the approach holds up for something larger than a one-page site.",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["PostgreSQL", "Own API", "3 languages", "Automated backups and rotation"],
+        "stack": [
+          "PostgreSQL",
+          "Own API",
+          "3 languages",
+          "Automated backups and rotation"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -129,11 +181,20 @@
     ],
     "idiomasTitulo": "Languages",
     "idiomas": [
-      { "nombre": "Spanish", "nivel": "Native" },
-      { "nombre": "English", "nivel": "C2" },
-      { "nombre": "中文", "nivel": "HSK 4" }
+      {
+        "nombre": "Spanish",
+        "nivel": "Native"
+      },
+      {
+        "nombre": "English",
+        "nivel": "C2"
+      },
+      {
+        "nombre": "中文",
+        "nivel": "HSK 4"
+      }
     ],
-    "herramientasTitulo": "What I work with",
+    "herramientasTitulo": "Delivered with",
     "herramientas": [
       "n8n",
       "Google APIs",

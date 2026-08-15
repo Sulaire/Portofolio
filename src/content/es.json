@@ -15,7 +15,29 @@
     "titulo": "Automatizo lo que tu negocio todavía hace a mano.",
     "subtitulo": "Especialista en automatizaciones con n8n e integración de IA para pymes. También diseño y entrego la web.",
     "ctaPrimario": "Cuéntame tu caso",
-    "ctaSecundario": "Ver proyectos"
+    "ctaSecundario": "Ver proyectos",
+    "ficha": [
+      {
+        "etiqueta": "Enfoque",
+        "valor": "Automatización con n8n e integración de IA",
+        "nota": ""
+      },
+      {
+        "etiqueta": "También",
+        "valor": "Webs a medida y APIs de Google",
+        "nota": ""
+      },
+      {
+        "etiqueta": "Idiomas",
+        "valor": "Español, inglés y chino",
+        "nota": ""
+      },
+      {
+        "etiqueta": "Dónde",
+        "valor": "España",
+        "nota": "En remoto"
+      }
+    ]
   },
   "servicios": {
     "titulo": "En qué te puedo ayudar",
@@ -60,20 +82,38 @@
     "items": [
       {
         "nombre": "AVP_INOX",
-        "tipo": "Web para taller de soldadura",
+        "titular": "Taller de soldadura de Palencia, con SEO local y presupuestos con foto",
+        "tipo": "Web",
         "estado": "Vendida y en producción",
         "resumen": "Web completa para un taller de soldadura y carpintería metálica de Guardo (Palencia). Construida entera antes de enseñársela al cliente, y vendida al presentársela terminada.",
         "problema": "Un taller nuevo en una zona rural, sin web y con toda su presencia en Instagram. Quien buscaba un soldador en la comarca no lo encontraba, y el trabajo se iba a la ciudad.",
         "solucion": "Web de una página con sus cuatro líneas de servicio, zona de cobertura, WhatsApp flotante y formulario de presupuesto con foto adjunta. SEO local con datos estructurados para que aparezca en las búsquedas de la zona. Se construyó en modo sigilo, sin indexar, para entregársela acabada.",
         "resultado": "Medido en móvil sobre build de producción: 98-99 en rendimiento, y 100 en accesibilidad, buenas prácticas y SEO. Está en producción; queda conectar el dominio propio y ajustar textos con el cliente.",
         "metricas": [
-          { "valor": "99", "label": "Rendimiento" },
-          { "valor": "100", "label": "Accesibilidad" },
-          { "valor": "100", "label": "Buenas prácticas" },
-          { "valor": "100", "label": "SEO" }
+          {
+            "valor": "99",
+            "label": "Rendimiento"
+          },
+          {
+            "valor": "100",
+            "label": "Accesibilidad"
+          },
+          {
+            "valor": "100",
+            "label": "Buenas prácticas"
+          },
+          {
+            "valor": "100",
+            "label": "SEO"
+          }
         ],
         "metricasNota": "Lighthouse, móvil, build de producción",
-        "stack": ["Next.js", "Formulario con antispam", "SEO local", "Railway"],
+        "stack": [
+          "Next.js",
+          "Formulario con antispam",
+          "SEO local",
+          "Railway"
+        ],
         "imagenClara": "imagenes/avpinox-claro.png",
         "imagenOscura": "imagenes/avpinox-oscuro.png",
         "imagenAlt": "Portada de la web de AVP_INOX, con el titular Soldadura y carpintería metálica sobre una superficie de acero cepillado",
@@ -82,6 +122,7 @@
       },
       {
         "nombre": "Gestor automático de facturas",
+        "titular": "Las facturas del trimestre llegan solas a la gestoría, ya agrupadas",
         "tipo": "Automatización",
         "estado": "En funcionamiento",
         "resumen": "Flujo en n8n que recoge las facturas, las organiza en Google Drive y cada trimestre las envía agrupadas a la gestoría. Sin que nadie tenga que acordarse.",
@@ -90,7 +131,12 @@
         "resultado": "TODO: el dato que lo vende. ¿Cuántas horas te ahorrabas por trimestre? ¿Cuántas facturas gestiona al año? ¿Se ha dejado de olvidar algún envío? Aunque sea aproximado, ponlo.",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "stack": [
+          "n8n",
+          "Google Drive API",
+          "Gmail API",
+          "Google Sheets"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -99,6 +145,7 @@
       },
       {
         "nombre": "App de calendario y tareas compartidas",
+        "titular": "Calendario y tareas para dos, con servidor y base de datos propios",
         "tipo": "Aplicación full-stack",
         "estado": "En desarrollo",
         "resumen": "Aplicación completa con su propio servidor, base de datos y sistema de cuentas. Nació de una necesidad personal y se convirtió en el proyecto donde se prueba todo lo que luego se aplica a los encargos.",
@@ -107,7 +154,12 @@
         "resultado": "Once módulos independientes, API versionada y tests sobre las rutas críticas. Es la prueba de que el planteamiento aguanta algo más grande que una web de una página.",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["PostgreSQL", "API propia", "3 idiomas", "Copias y rotación automáticas"],
+        "stack": [
+          "PostgreSQL",
+          "API propia",
+          "3 idiomas",
+          "Copias y rotación automáticas"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -129,11 +181,20 @@
     ],
     "idiomasTitulo": "Idiomas",
     "idiomas": [
-      { "nombre": "Español", "nivel": "Nativo" },
-      { "nombre": "Inglés", "nivel": "C2" },
-      { "nombre": "中文", "nivel": "HSK 4" }
+      {
+        "nombre": "Español",
+        "nivel": "Nativo"
+      },
+      {
+        "nombre": "Inglés",
+        "nivel": "C2"
+      },
+      {
+        "nombre": "中文",
+        "nivel": "HSK 4"
+      }
     ],
-    "herramientasTitulo": "Con qué trabajo",
+    "herramientasTitulo": "Entregado con",
     "herramientas": [
       "n8n",
       "APIs de Google",

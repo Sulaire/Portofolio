@@ -15,7 +15,29 @@
     "titulo": "把你还在手工做的事情，交给自动化。",
     "subtitulo": "专注 n8n 流程自动化与 AI 集成，服务中小企业。网站的设计与交付也一并负责。",
     "ctaPrimario": "说说你的情况",
-    "ctaSecundario": "查看项目"
+    "ctaSecundario": "查看项目",
+    "ficha": [
+      {
+        "etiqueta": "专注",
+        "valor": "n8n 流程自动化与 AI 集成",
+        "nota": ""
+      },
+      {
+        "etiqueta": "也做",
+        "valor": "定制网站与 Google API 对接",
+        "nota": ""
+      },
+      {
+        "etiqueta": "语言",
+        "valor": "西班牙语、英语、中文",
+        "nota": ""
+      },
+      {
+        "etiqueta": "所在",
+        "valor": "西班牙",
+        "nota": "远程协作"
+      }
+    ]
   },
   "servicios": {
     "titulo": "我能帮你做什么",
@@ -60,20 +82,38 @@
     "items": [
       {
         "nombre": "AVP_INOX",
-        "tipo": "焊接工坊网站",
+        "titular": "西班牙乡村的焊接工坊，含本地 SEO 与可上传照片的报价表单",
+        "tipo": "网站",
         "estado": "已售出并上线运行",
         "resumen": "为西班牙瓜尔多一家焊接与金属加工工坊做的完整网站。在客户完全不知情的情况下全部做完，交付时直接呈现成品并成交。",
         "problema": "一家位于乡村地区的新工坊，没有网站，全部业务展示都在 Instagram 上。附近想找焊工的人搜不到它，生意都流向了城里。",
         "solucion": "单页网站，涵盖四条业务线、服务范围、悬浮 WhatsApp 按钮，以及可上传照片的报价表单。配合结构化数据做本地 SEO，让它能出现在周边搜索结果里。开发期间不允许被索引，以便交付时是完整成品。",
         "resultado": "在生产构建、移动端下实测：性能 98-99，无障碍、最佳实践与 SEO 均为 100。目前已上线，仍待接入自有域名并与客户敲定文案。",
         "metricas": [
-          { "valor": "99", "label": "性能" },
-          { "valor": "100", "label": "无障碍" },
-          { "valor": "100", "label": "最佳实践" },
-          { "valor": "100", "label": "SEO" }
+          {
+            "valor": "99",
+            "label": "性能"
+          },
+          {
+            "valor": "100",
+            "label": "无障碍"
+          },
+          {
+            "valor": "100",
+            "label": "最佳实践"
+          },
+          {
+            "valor": "100",
+            "label": "SEO"
+          }
         ],
         "metricasNota": "Lighthouse，移动端，生产构建",
-        "stack": ["Next.js", "防垃圾表单", "本地 SEO", "Railway"],
+        "stack": [
+          "Next.js",
+          "防垃圾表单",
+          "本地 SEO",
+          "Railway"
+        ],
         "imagenClara": "imagenes/avpinox-claro.png",
         "imagenOscura": "imagenes/avpinox-oscuro.png",
         "imagenAlt": "AVP_INOX 网站首页，标题为「焊接与金属加工」，背景是拉丝钢面",
@@ -82,6 +122,7 @@
       },
       {
         "nombre": "发票自动归集系统",
+        "titular": "每季度的发票自动打包，直接送达会计事务所",
         "tipo": "流程自动化",
         "estado": "运行中",
         "resumen": "一套 n8n 流程：自动收取发票、归档到 Google Drive，并在每个季度结束时打包发送给会计事务所。不需要任何人去记这件事。",
@@ -90,7 +131,12 @@
         "resultado": "TODO: 最有说服力的数字。每季度节省多少小时？每年处理多少张发票？是否彻底杜绝了漏交？估算值也可以。",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["n8n", "Google Drive API", "Gmail API", "Google Sheets"],
+        "stack": [
+          "n8n",
+          "Google Drive API",
+          "Gmail API",
+          "Google Sheets"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -99,6 +145,7 @@
       },
       {
         "nombre": "共享日历与任务应用",
+        "titular": "两人共享的日历与任务，配自建服务端与数据库",
         "tipo": "全栈应用",
         "estado": "开发中",
         "resumen": "拥有独立服务端、数据库和账号体系的完整应用。起点是一个真实的个人需求，后来成了所有做法先行验证、再用到客户项目上的试验场。",
@@ -107,7 +154,12 @@
         "resultado": "十一个独立模块、带版本的 API，关键路由均有测试覆盖。这证明这套做法撑得起比单页网站更大的东西。",
         "metricas": [],
         "metricasNota": "",
-        "stack": ["PostgreSQL", "自建 API", "三种语言", "自动备份与轮换"],
+        "stack": [
+          "PostgreSQL",
+          "自建 API",
+          "三种语言",
+          "自动备份与轮换"
+        ],
         "imagenClara": "",
         "imagenOscura": "",
         "imagenAlt": "",
@@ -129,11 +181,20 @@
     ],
     "idiomasTitulo": "语言",
     "idiomas": [
-      { "nombre": "西班牙语", "nivel": "母语" },
-      { "nombre": "英语", "nivel": "C2" },
-      { "nombre": "中文", "nivel": "HSK 4" }
+      {
+        "nombre": "西班牙语",
+        "nivel": "母语"
+      },
+      {
+        "nombre": "英语",
+        "nivel": "C2"
+      },
+      {
+        "nombre": "中文",
+        "nivel": "HSK 4"
+      }
     ],
-    "herramientasTitulo": "我使用的工具",
+    "herramientasTitulo": "交付所用",
     "herramientas": [
       "n8n",
       "Google APIs",
