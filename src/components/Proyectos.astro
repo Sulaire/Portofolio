@@ -8,6 +8,16 @@ interface Props {
 const { t } = Astro.props;
 
 const bloques = ['problema', 'solucion', 'resultado'] as const;
+
+// La rejilla de métricas se adapta a cuántas haya, para que nunca quede
+// una celda vacía. Las clases van escritas enteras porque Tailwind las
+// busca en el código: construirlas concatenando cadenas no funcionaría.
+const columnas: Record<number, string> = {
+  1: 'sm:grid-cols-1',
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-3',
+  4: 'sm:grid-cols-4',
+};
 ---
 
 <section id="proyectos" class="border-t border-borde px-5 py-24 sm:px-8">
@@ -70,11 +80,27 @@ const bloques = ['problema', 'solucion', 'resultado'] as const;
 
             {p.metricas.length > 0 && (
               <div class="mt-8">
-                <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-tarjeta border border-borde bg-borde sm:grid-cols-4">
-                  {p.metricas.map((m: any) => (
-                    <div class="bg-superficie px-5 py-6">
+                <dl
+                  class:list={[
+                    'grid grid-cols-2 gap-px overflow-hidden rounded-tarjeta border border-borde bg-borde',
+                    columnas[p.metricas.length] ?? 'sm:grid-cols-4',
+                  ]}
+                >
+                  {p.metricas.map((m: any, i: number) => (
+                    <div
+                      class:list={[
+                        'bg-superficie px-5 py-6',
+                        // En móvil van de dos en dos: si el número es impar,
+                        // la última ocupa la fila entera y no deja hueco.
+                        p.metricas.length % 2 === 1 &&
+                          i === p.metricas.length - 1 &&
+                          'max-sm:col-span-2',
+                      ]}
+                    >
                       <dt class="text-xs leading-snug text-apagado">{m.label}</dt>
-                      <dd class="mt-1 font-mono text-3xl tracking-tight text-acento">{m.valor}</dd>
+                      <dd class="mt-1 font-mono text-2xl tracking-tight text-acento sm:text-3xl">
+                        {m.valor}
+                      </dd>
                     </div>
                   ))}
                 </dl>

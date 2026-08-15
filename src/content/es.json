@@ -146,7 +146,7 @@
         "metricasNota": "Estimación a partir del tiempo que dedicaba el cliente antes de automatizarlo",
         "stack": [
           "n8n",
-          "Gmail API",
+          "Gmail",
           "Google Drive",
           "Google Sheets",
           "Telegram"

@@ -146,7 +146,7 @@
         "metricasNota": "依据客户自动化之前所花的时间估算",
         "stack": [
           "n8n",
-          "Gmail API",
+          "Gmail",
           "Google Drive",
           "Google Sheets",
           "Telegram"
