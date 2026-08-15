@@ -122,20 +122,34 @@
       },
       {
         "nombre": "Automated invoice manager",
-        "titular": "Each quarter's invoices reach the accountant on their own, grouped",
+        "titular": "A bar was spending its only day off each week sorting invoices",
         "tipo": "Automation",
         "estado": "Running",
         "resumen": "An n8n workflow that collects invoices, files them in Google Drive and every quarter sends them, grouped, to the accountant. Nobody has to remember.",
-        "problema": "Every quarter-end meant the same routine: hunting for invoices in the inbox, downloading them one by one, renaming them, checking none were missing, and mailing the lot to the accountant. Tedious, easy to postpone, easy to get wrong.",
-        "solucion": "An n8n workflow wired into the Google APIs. It picks up incoming invoices, stores them in Drive with consistent naming and keeps the ledger. At quarter-end it groups the whole period and emails it to the accountant automatically.",
-        "resultado": "TODO: the number that sells it. Hours saved per quarter? Invoices handled per year? Missed submissions eliminated? An estimate is fine.",
-        "metricas": [],
-        "metricasNota": "",
+        "problema": "A bar receives invoices from a long list of suppliers: two beer distributors, the coffee one, the potato one, electricity, water, the cigarette machine, the local supermarkets. The owner spent Tuesdays, his only day off in the week, digging them out of his inbox one by one, renaming them, filing them into Drive folders and logging them in a spreadsheet. All by hand. And once a month he drove to the accountant in person with the printed stack.",
+        "solucion": "An n8n workflow that watches the inbox and recognises suppliers from a list held in Google Sheets, so adding a new one never means touching the workflow. It reads the date off the invoice itself rather than the email, because a March invoice can arrive in April. It files the document in Drive by year and month under a consistent name, logs it, and notifies by email and Telegram. Duplicates are caught twice over: a fingerprint in the ledger, and a filename check in the folder itself. It is deliberately split into two workflows: one watches the inbox daily and files, the other handles the quarterly close. If one breaks, the other keeps running.",
+        "resultado": "Around two hours every week, plus a morning each month at the accountant's. Close to a hundred hours a year given back, and more to the point, the only day off he had. Digital invoices file themselves, and every quarter they go to the accountant grouped, with nobody having to remember.",
+        "metricas": [
+          {
+            "valor": "2 h",
+            "label": "back every week"
+          },
+          {
+            "valor": "~100 h",
+            "label": "a year"
+          },
+          {
+            "valor": "0",
+            "label": "trips to the accountant"
+          }
+        ],
+        "metricasNota": "Estimated from the time the client spent before it was automated",
         "stack": [
           "n8n",
-          "Google Drive API",
           "Gmail API",
-          "Google Sheets"
+          "Google Drive",
+          "Google Sheets",
+          "Telegram"
         ],
         "imagenClara": "",
         "imagenOscura": "",

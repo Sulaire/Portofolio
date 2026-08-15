@@ -122,20 +122,34 @@
       },
       {
         "nombre": "Gestor automático de facturas",
-        "titular": "Las facturas del trimestre llegan solas a la gestoría, ya agrupadas",
+        "titular": "Un bar dedicaba su único día libre de la semana a ordenar facturas",
         "tipo": "Automatización",
         "estado": "En funcionamiento",
         "resumen": "Flujo en n8n que recoge las facturas, las organiza en Google Drive y cada trimestre las envía agrupadas a la gestoría. Sin que nadie tenga que acordarse.",
-        "problema": "Cada cierre trimestral tocaba lo mismo: buscar facturas en el correo, descargarlas una a una, renombrarlas, comprobar que no faltaba ninguna y mandarlo todo a la gestoría. Tedioso, fácil de posponer y fácil de hacer mal.",
-        "solucion": "Flujo en n8n conectado a las APIs de Google. Detecta las facturas que entran, las guarda ordenadas en Drive con un nombre coherente y lleva el registro. Al cerrar el trimestre, agrupa todo el periodo y lo envía automáticamente a la gestoría en un único correo.",
-        "resultado": "TODO: el dato que lo vende. ¿Cuántas horas te ahorrabas por trimestre? ¿Cuántas facturas gestiona al año? ¿Se ha dejado de olvidar algún envío? Aunque sea aproximado, ponlo.",
-        "metricas": [],
-        "metricasNota": "",
+        "problema": "Un bar recibe facturas de muchísimos proveedores distintos: dos distribuidores de cerveza, el del café, el de las patatas, la luz, el agua, la máquina de tabaco, los supermercados del pueblo. El dueño dedicaba los martes, su único día libre de la semana, a buscarlas una a una en el correo, renombrarlas, guardarlas en carpetas de Drive y anotarlas en un Excel. Todo a mano. Y una vez al mes se acercaba en persona a la gestoría con el taco impreso.",
+        "solucion": "Un flujo en n8n que vigila el correo y reconoce a los proveedores a partir de una lista en Google Sheets, de modo que dar de alta uno nuevo no obliga a tocar el flujo. De cada factura extrae la fecha del propio documento y no la del correo, porque una factura de marzo puede llegar en abril. La archiva en Drive por año y mes con un nombre uniforme, la anota en el registro y avisa por correo y Telegram. Lleva doble control de duplicados: una huella en el registro y una comprobación de nombres en la propia carpeta. Son dos flujos separados a propósito: uno vigila el correo a diario y archiva, y otro se ocupa del cierre trimestral. Si uno falla, el otro sigue funcionando.",
+        "resultado": "Unas dos horas cada semana, más una mañana al mes en la gestoría. Cerca de cien horas al año recuperadas, y sobre todo el único día libre que tenía. Las facturas digitales se archivan solas y cada trimestre salen agrupadas hacia la gestoría sin que nadie tenga que acordarse.",
+        "metricas": [
+          {
+            "valor": "2 h",
+            "label": "recuperadas cada semana"
+          },
+          {
+            "valor": "~100 h",
+            "label": "al año"
+          },
+          {
+            "valor": "0",
+            "label": "viajes a la gestoría"
+          }
+        ],
+        "metricasNota": "Estimación a partir del tiempo que dedicaba el cliente antes de automatizarlo",
         "stack": [
           "n8n",
-          "Google Drive API",
           "Gmail API",
-          "Google Sheets"
+          "Google Drive",
+          "Google Sheets",
+          "Telegram"
         ],
         "imagenClara": "",
         "imagenOscura": "",
