@@ -1,8 +1,7 @@
 ---
 // Las tipografías se sirven desde el propio sitio (no desde Google Fonts):
 // más rápido, y ninguna petición a un tercero que rastree al visitante.
-import '@fontsource-variable/geist';
-import '@fontsource-variable/geist-mono';
+import { Font } from 'astro:assets';
 import '../styles/global.css';
 
 import Nav from '../components/Nav.astro';
@@ -28,6 +27,9 @@ const canonica = new URL(inicio(lang), Astro.site);
     <meta name="description" content={t.meta.descripcion} />
     <link rel="canonical" href={canonica} />
     <link rel="icon" href={recurso('favicon.svg')} type="image/svg+xml" />
+
+    <Font cssVariable="--fuente-texto" preload />
+    <Font cssVariable="--fuente-mono" />
 
     {
       idiomas.map((codigo) => (

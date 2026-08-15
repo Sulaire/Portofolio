@@ -170,6 +170,10 @@ pastilla, **tarjetas** a 14px (`rounded-tarjeta`), **campos y etiquetas** a 8px
 (`rounded-chico`). Mezclar radios sin criterio es de las cosas que más delatan una web
 hecha a ojo.
 
+Las tipografías (Geist) están dentro del repo, en `src/assets/fuentes/`. No se descargan
+de Google ni de ningún CDN: se sirven desde tu propio dominio, así que nadie externo ve
+quién visita tu web, y la publicación no depende de que un servicio ajeno esté en pie.
+
 Los iconos son de [Phosphor](https://phosphoricons.com). Para cambiar uno, busca el
 nombre en su web y ponlo en el JSON con el prefijo `ph:` (por ejemplo `ph:flow-arrow`).
 Se incrustan al construir la web, así que no añaden ni una petición ni JavaScript.
@@ -192,6 +196,7 @@ src/
 │   ├── SobreMi.astro
 │   ├── Contacto.astro    (formulario + conexión con n8n)
 │   └── Footer.astro
+├── assets/fuentes/       (las tipografías, servidas desde el propio sitio)
 ├── layouts/Base.astro    (estructura común: título, SEO, idiomas)
 ├── lib/i18n.ts           (carga los textos del idioma correcto)
 ├── styles/global.css     ← LOS COLORES (dos temas) Y LOS RADIOS

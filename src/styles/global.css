@@ -73,10 +73,12 @@
   --radius-chico: 8px;
   --radius-tarjeta: 14px;
 
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo,
-    Consolas, monospace;
+  /* --fuente-texto y --fuente-mono las genera Astro (ver astro.config.mjs).
+     Incluyen la fuente de reserva con métricas corregidas. Detrás van las
+     tipografías del sistema para chino, que Geist no cubre. */
+  --font-sans: var(--fuente-texto), "Noto Sans SC", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  --font-mono: var(--fuente-mono), monospace;
 }
 
 html {
