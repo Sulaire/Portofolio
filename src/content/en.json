@@ -190,7 +190,7 @@
   "sobreMi": {
     "titulo": "About me",
     "parrafos": [
-      "TODO: two or three sentences in your own voice. How you got here and why someone should trust you with their project. People hire people, not CVs.",
+      "What I do doesn't start with code. It starts by looking at where a business is losing its time, and it is almost never where the owner thinks. At the bar the problem wasn't the invoices: it was that he sorted them on Tuesdays, the only day off he had all week. That is where the real work is.",
       "What I am good at is spotting where a business loses its time, anticipating what will break before it gets built, and leaving it running. I work in Spanish, English and Chinese, so I can carry a project end to end without language getting in the way."
     ],
     "idiomasTitulo": "Languages",
