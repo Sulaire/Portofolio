@@ -124,6 +124,21 @@ relations:
   abrir nada.
 - El estado vive en la URL: cualquier vista se comparte con un enlace.
 
+### En móvil
+
+**Pellizca** para el zoom y **doble toque** para acercarte a un punto. La ficha
+sube como panel inferior al tocar a alguien y se va al tocar el mapa; los
+controles viven detrás de *Filtros y controles*.
+
+El mapa **no abre encuadrando el mundo entero**. En 390px eso caía en `k=0.12`
+—el suelo del zoom, por debajo del umbral en el que se dibujan los nombres— con
+los nodos ocultos y por tanto nada que tocar: parecía roto y en realidad estaba
+haciendo justo lo que se le pedía. Legible gana a completo, así que abre a una
+escala en la que la gente tiene nombre, centrado en el centro de masas del
+mundo. La regla mira el **resultado**, no el dispositivo: si el encuadre
+completo no se puede leer, se abre acercado, tenga la pantalla el tamaño que
+tenga.
+
 ---
 
 ## Legibilidad: el problema de fondo

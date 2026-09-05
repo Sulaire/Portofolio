@@ -115,6 +115,11 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
   border:1px solid var(--hair2);border-radius:7px;padding:11px 13px;pointer-events:none;
   opacity:0;transition:opacity .13s;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 #lore.on{opacity:1}
+/* If something throws, say so where the reader can see it. A map that
+   silently does nothing on somebody else's phone is a bug nobody can report. */
+#oops{position:fixed;left:8px;right:8px;bottom:8px;z-index:999;
+  background:#5A1E16;border:1px solid #A34A4A;border-radius:7px;
+  padding:9px 12px;font:11px/1.45 var(--mono);color:#F0D8D0}
 #lore h4{font:600 14px/1.25 var(--serif);margin-bottom:2px}
 #lore .m{font:9.5px/1.5 var(--mono);color:var(--ember);text-transform:uppercase;letter-spacing:.07em}
 #lore p{font:12px/1.5 var(--sans);color:var(--dim);margin-top:7px}
@@ -181,10 +186,28 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
 }
 @media(max-width:900px){
   .body{flex-direction:column}
-  #side{width:100%;max-height:44dvh;border-left:0;border-top:1px solid var(--hair)}
-  #toggle-side{top:auto;bottom:0;right:50%;transform:translateX(50%);width:52px;height:17px;
-    border-radius:5px 5px 0 0;border:1px solid var(--hair);border-bottom:0}
-  #q{width:130px}
+  /* The panel is a sheet over the map, not a column beside it. Splitting a
+     664px phone between them left the graph 272px tall — too little to read
+     and too little to aim at. */
+  #side{position:absolute;left:0;right:0;bottom:0;width:auto;z-index:20;
+    max-height:62dvh;border-left:0;border-top:1px solid var(--hair2);
+    border-radius:12px 12px 0 0;box-shadow:0 -12px 34px rgba(0,0,0,.55);
+    transform:translateY(100%);transition:transform .22s ease;padding:16px 16px 26px}
+  #side.up{transform:translateY(0)}
+  #side.off{display:block}
+  /* The grab bar doubles as the dismiss target. */
+  #side::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);
+    width:38px;height:4px;border-radius:2px;background:var(--hair2)}
+  #toggle-side{display:none}
+  #q{width:100%}
+  .search{flex:1 1 100%}
+  .grp{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding-bottom:2px}
+  .grp::-webkit-scrollbar{display:none}
+  .chips{flex-wrap:nowrap}
+  /* Touch targets. 6px of padding is a mouse target, not a finger. */
+  .seg button,.btn,.chip{padding:9px 12px;font-size:11.5px}
+  input[type=range]{width:120px;height:22px}
 }
 </style>
 </head>
@@ -261,6 +284,16 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border:0;border-radiu
 </div>
 </div>
 
+<div id="oops" hidden></div>
+<script>
+window.addEventListener('error', function (e) {
+  var box = document.getElementById('oops');
+  if (!box) return;
+  box.hidden = false;
+  box.textContent = 'Error: ' + (e.message || e) +
+    (e.lineno ? '  (línea ' + e.lineno + ')' : '');
+});
+</script>
 <script id="map-data" type="application/json">/*__DATA__*/</script>
 <script>
 "use strict";
@@ -359,10 +392,11 @@ function fit(ids, ms = 420){
   const x0 = Math.min(...xs), x1 = Math.max(...xs);
   const y0 = Math.min(...ys), y1 = Math.max(...ys);
   const {w, h} = viewport();
-  /* Pad in SCREEN pixels, not world units: a fixed world padding shrinks to
-     nothing when the selection is one node and swallows the view when it is
-     the whole map. Labels need roughly this much room either side. */
-  const pad = 110;
+  /* Pad in SCREEN pixels, but never more than a sixth of the viewport: a flat
+     110px on each side of a 390px phone is 220px of margin around a 170px
+     map, which is how the whole world ended up at k=0.12 — the zoom floor,
+     below every label threshold, with the nodes hidden and nothing to tap. */
+  const pad = Math.min(110, Math.min(w, h) * 0.14);
   const k = Math.max(.12, Math.min(2.4,
     Math.min((w - pad*2) / Math.max(x1-x0, 1), (h - pad*2) / Math.max(y1-y0, 1))));
   animateTo(w/2 - k*(x0+x1)/2, h/2 - k*(y0+y1)/2, k, ms);
@@ -406,20 +440,64 @@ function worldOf(ev){
   const r = svg.getBoundingClientRect();
   return { x: (ev.clientX - r.left - T.x) / T.k, y: (ev.clientY - r.top - T.y) / T.k };
 }
+/* Every active pointer, so two fingers can be told from one.
+   Pointer events already deliver touch, so pinch needs no separate TouchEvent
+   path — just the bookkeeping to notice there are two of them. */
+const pointers = new Map();
+let pinch = null;
+
+function pinchState(){
+  const [a, b] = [...pointers.values()];
+  return { d: Math.hypot(b.x - a.x, b.y - a.y),
+           cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 };
+}
+
 svg.addEventListener('pointerdown', ev => {
-  if (ev.button !== 0) return;
+  if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+  pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+  // `setPointerCapture` throws InvalidPointerId when the pointer is already
+  // gone, which on touch happens whenever the browser decides mid-gesture
+  // that it owns the scroll. An uncaught throw here kills the handler and the
+  // tap does nothing.
+  try { svg.setPointerCapture(ev.pointerId); } catch (e) {}
+
+  if (pointers.size === 2){
+    drag = null;                       // a second finger cancels any drag
+    svg.classList.remove('drag');
+    pinch = { ...pinchState(), k: T.k, tx: T.x, ty: T.y };
+    return;
+  }
+  if (pointers.size > 2) return;
+
   const id = nodeUnder(ev);
   const w = worldOf(ev);
   drag = id
     ? { kind:'node', id, ox: byId[id].x - w.x, oy: byId[id].y - w.y,
         x: ev.clientX, y: ev.clientY, moved:false }
     : { kind:'pan', x: ev.clientX, y: ev.clientY, tx: T.x, ty: T.y, moved:false };
-  svg.setPointerCapture(ev.pointerId);
   svg.classList.add('drag');
 });
+
 svg.addEventListener('pointermove', ev => {
+  if (!pointers.has(ev.pointerId)) return;
+  pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+
+  if (pinch && pointers.size >= 2){
+    const now = pinchState();
+    const r = svg.getBoundingClientRect();
+    const k = Math.max(.12, Math.min(2.4, pinch.k * (now.d / (pinch.d || 1))));
+    // Keep the point between the fingers under the fingers, and let the
+    // midpoint drag the map at the same time — that is what a pinch feels
+    // like when it is right.
+    const px = pinch.cx - r.left, py = pinch.cy - r.top;
+    T = { k,
+          x: (now.cx - r.left) - (px - pinch.tx) * k / pinch.k,
+          y: (now.cy - r.top)  - (py - pinch.ty) * k / pinch.k };
+    applyT();
+    return;
+  }
   if (!drag) return;
-  if (Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 3) drag.moved = true;
+  if (Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 6) drag.moved = true;
   if (drag.kind === 'pan'){
     T.x = drag.tx + (ev.clientX - drag.x);
     T.y = drag.ty + (ev.clientY - drag.y);
@@ -429,12 +507,40 @@ svg.addEventListener('pointermove', ev => {
     moveNode(drag.id, w.x + drag.ox, w.y + drag.oy);
   }
 });
-svg.addEventListener('pointerup', ev => {
-  if (drag && !drag.moved) select(drag.kind === 'node' ? drag.id : null);
-  if (drag && drag.kind === 'node' && drag.moved) moved.add(drag.id);
-  drag = null; svg.classList.remove('drag');
+
+function releasePointer(ev){
+  pointers.delete(ev.pointerId);
+  if (pointers.size < 2) pinch = null;
+  if (pointers.size === 0){
+    if (drag && !drag.moved) select(drag.kind === 'node' ? drag.id : null);
+    if (drag && drag.kind === 'node' && drag.moved) moved.add(drag.id);
+    drag = null; svg.classList.remove('drag');
+  }
+}
+svg.addEventListener('pointerup', releasePointer);
+svg.addEventListener('pointercancel', ev => {
+  pointers.delete(ev.pointerId);
+  if (pointers.size < 2) pinch = null;
+  if (pointers.size === 0){ drag = null; svg.classList.remove('drag'); }
 });
-svg.addEventListener('pointercancel', () => { drag = null; svg.classList.remove('drag'); });
+
+/* Double tap zooms, because a phone has no wheel and pinching to read one
+   character is four gestures too many. */
+let lastTap = 0, lastTapAt = null;
+svg.addEventListener('pointerup', ev => {
+  if (ev.pointerType === 'mouse') return;
+  const now = Date.now();
+  const near = lastTapAt && Math.hypot(ev.clientX - lastTapAt.x, ev.clientY - lastTapAt.y) < 34;
+  if (now - lastTap < 320 && near){
+    const r = svg.getBoundingClientRect();
+    const mx = ev.clientX - r.left, my = ev.clientY - r.top;
+    const k = Math.min(2.4, T.k * 1.9);
+    animateTo(mx - (mx - T.x) * k / T.k, my - (my - T.y) * k / T.k, k, 260);
+    lastTap = 0; lastTapAt = null;
+    return;
+  }
+  lastTap = now; lastTapAt = { x: ev.clientX, y: ev.clientY };
+});
 
 /* Nodes the reader has dragged. Kept so Reiniciar can put them back, and so a
    filter change never silently undoes hand placement. */
@@ -511,6 +617,13 @@ function distances(){
   }
   return d;
 }
+/* Written the long way on purpose: `??` needs Safari 13.1, and one
+   unsupported operator anywhere in this block is a syntax error that stops
+   the ENTIRE script from running — on an old phone the map would not just
+   misbehave, it would be a blank page. Cheap insurance. */
+function distOr(map, id){ const v = map.get(id); return v === undefined ? 9 : v; }
+function weightOf(kind){ const v = KIND_WEIGHT[kind]; return v === undefined ? 0 : v; }
+
 const HOP_FADE = [1, .9, .42, .19, .1];
 const fadeAt = k => k == null ? .055 : (HOP_FADE[k] !== undefined ? HOP_FADE[k] : .07);
 
@@ -845,13 +958,12 @@ function build(){
       g.appendChild(tx);
     });
 
-    if (n.factionLabel || n.state){
+    if (subLine(n)){
       const f = document.createElementNS(NS, 'text');
       f.setAttribute('class', 'nsub'); f.setAttribute('text-anchor', 'middle');
       f.dataset.line = lines.length; f.dataset.r = r;
       f.setAttribute('y', r + 13 + lines.length * 11);
-      f.textContent = (n.state ? (STATE_MARK[n.state] || '') + ' ' + (STATE_ES[n.state] || n.state) + ' · ' : '')
-                    + n.factionLabel;
+      f.textContent = subLine(n);
       g.appendChild(f);
     }
 
@@ -872,6 +984,18 @@ const STATE_ES = { feral:'perdido de sí', catatonic:'catatónico',
    on a word boundary. */
 const HONORIFICS = new Set(['King','Queen','Prince','Princess','Lord','Lady',
   'Sir','Dame','Archbishopess','Archbishop','Bishop','Don','The']);
+/* The line under the name. Built in one place because it is drawn once and
+   MEASURED once, and a copy of the logic in the measuring path is how it ends
+   up saying something different from what is on screen. Rukhien has a state
+   and no faction, and joining them unconditionally printed
+   "perdido de sí · null" under him. */
+function subLine(n){
+  const bits = [];
+  if (n.state) bits.push(((STATE_MARK[n.state] || '') + ' ' + (STATE_ES[n.state] || n.state)).trim());
+  if (n.factionLabel) bits.push(n.factionLabel);
+  return bits.join(' · ');
+}
+
 function wrapName(name){
   const parts = name.split(' ');
   if (parts.length < 2 || name.length <= 15) return [name];
@@ -916,7 +1040,7 @@ function refreshEdges(){
     el.line.setAttribute('stroke-dasharray', both ? '' : '5 4');
     // An edge is only as near as its further end.
     el.line.style.opacity = dist
-      ? (touching ? 1 : fadeAt(Math.max(dist.get(e.a) ?? 9, dist.get(e.b) ?? 9)))
+      ? (touching ? 1 : fadeAt(Math.max(distOr(dist, e.a), distOr(dist, e.b))))
       : .55;
     void touching;
     el.label.style.display = 'none';   // placeLabels() decides who gets one
@@ -934,7 +1058,7 @@ function refreshNodes(){
     // names are not an answer, they are scenery you have to read through —
     // and every one of them is an obstacle that pushes a relationship label
     // off the canvas. Quieting them is what buys the room to say something.
-    g.classList.toggle('quiet', !!dist && (dist.get(n.id) ?? 9) > 1);
+    g.classList.toggle('quiet', !!dist && distOr(dist, n.id) > 1);
   });
 }
 function refreshCounts(){
@@ -1031,10 +1155,7 @@ function placeLabels(){
     // Measure the WIDEST line of the block, and the faction line is often it:
     // "The Crown" in 8.5px mono is wider than "Vareth" in 11px semibold, so
     // measuring only the name left a strip either side that labels landed in.
-    const sub = n.state || n.factionLabel
-      ? (n.state ? (STATE_MARK[n.state] || '') + ' ' + (STATE_ES[n.state] || n.state) + ' · ' : '')
-        + (n.factionLabel || '')
-      : '';
+    const sub = subLine(n);
     const w = Math.max(
       ...lines.map(l => textW(l, NAME_FONT)),
       sub ? textW(sub, SUB_FONT) : 0) + 10;
@@ -1063,7 +1184,7 @@ function placeLabels(){
   }).map(e => {
     const d = from(e, S.sel);
     return { e, text: edgeLabel(e, S.sel),
-             rank: (d && d.label ? 1 : 0) + (KIND_WEIGHT[d && d.kind] ?? 0) };
+             rank: (d && d.label ? 1 : 0) + (weightOf(d && d.kind)) };
   }).filter(c => c.text)
     .sort((a, b) => b.rank - a.rank);
 
@@ -1167,9 +1288,13 @@ function lore(n, ev){
 }
 
 /* ── sidebar ────────────────────────────────────────────────── */
+const isSheet = () => matchMedia('(max-width:900px)').matches;
 function renderSide(){
   const side = $('#side');
-  if (!S.sel){ side.innerHTML = legendHTML(); return; }
+  // On a phone the panel is a sheet: it comes up when you pick somebody and
+  // goes away when you let them go, instead of permanently eating the map.
+  if (isSheet()) side.classList.toggle('up', !!S.sel);
+  if (!S.sel){ if (!isSheet()) side.innerHTML = legendHTML(); return; }
   const n = byId[S.sel];
   const rels = adj[S.sel]
     .filter(edgeVisible)
@@ -1177,7 +1302,7 @@ function renderSide(){
                  mine: from(e, S.sel), theirs: from(e, other(e, S.sel)) }))
     .sort((x, y) => x.o.name.localeCompare(y.o.name));
 
-  const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
   const readingHTML = (d, who) => {
@@ -1188,7 +1313,7 @@ function renderSide(){
     // Bar length is the weight of the WORD, not a number anybody measured for
     // this pair. It grows right for warmth and left for hostility, so a column
     // of relationships can be scanned without reading any of them.
-    const w = Math.round((KIND_WEIGHT[d.kind] ?? 0) * 50);
+    const w = Math.round(weightOf(d.kind) * 50);
     const neg = (KIND_VALENCE[d.kind] || 0) < 0;
     let h = `<div class="dir"><span class="arrow">${who}</span>
       <span class="meter" title="${esc(KIND_ES[d.kind] || d.kind)}"><i style="
@@ -1480,7 +1605,30 @@ loadURL();
 if (S.spread || S.groupBy !== 'realm') regroup();
 buildChips();
 refresh();
-fit(null, 0);
+openingView();
+
+/* On a phone, fitting the whole map is not an achievement — 45 characters
+   across 390px lands below the zoom at which names are drawn, so the reader
+   gets an unreadable constellation with nothing to tap. Readable beats
+   complete: open at a scale where people have names, centred on the densest
+   part of the world, and let pinch and pan do the rest. On a desktop the
+   whole map is legible at once, so it is still framed whole. */
+function openingView(){
+  fit(null, 0);
+  // The test is the RESULT, not the device. Keying it off screen size opened
+  // an iPad at k=0.48 — below the threshold where names are drawn — because
+  // 768px counts as "big". What matters is whether the framing that fits
+  // everything is one you can read, and that is one rule everywhere.
+  if (T.k >= 0.72) return;
+  const { w, h } = viewport();
+  const k = 0.85;
+  const vis = visibleNodes();
+  // The centre of mass, not the centre of the bounding box: it puts you where
+  // the characters are rather than in whatever empty quarter balances them.
+  const cx = vis.reduce((a, n) => a + n.x, 0) / vis.length;
+  const cy = vis.reduce((a, n) => a + n.y, 0) / vis.length;
+  animateTo(w / 2 - cx * k, h / 2 - cy * k, k, 0);
+}
 </script>
 </body>
 </html>
