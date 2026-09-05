@@ -126,6 +126,53 @@ relations:
 
 ---
 
+## Legibilidad: el problema de fondo
+
+Seleccionar a Ithanel dibujaba **once** etiquetas de arista a su alrededor,
+**seis de ellas «sin declarar»**, superpuestas entre sí y sobre los nombres.
+Tres errores distintos, y solo el tercero es de geometría:
+
+1. **Etiquetaba la ausencia.** «Sin declarar» es el 46% de las aristas y no
+   informa de nada; la ficha de la derecha ya lo dice, en lista y legible.
+   Nunca gastes tinta del lienzo en la falta de un dato.
+2. **No tenía presupuesto.** El recurso escaso es el espacio *de pantalla*, no
+   los píxeles: una región admite cuatro o cinco etiquetas por mucho que
+   quieras decir.
+3. **Colocaba a ciegas.** La posición salía de la geometría, sin saber qué
+   había ya dibujado ahí.
+
+La solución es la colocación cartográfica de toda la vida — **voraz, con
+rechazo**: ordena las candidatas por cuánto informan, ofrécele a cada una
+doce posiciones (cuatro distancias por la arista × en la línea y a cada lado),
+y quédate con las que caen libres de todo lo ya colocado.
+
+Y tres piezas que lo hacen funcionar de verdad:
+
+- **El texto vive en espacio de pantalla, la geometría en espacio de mundo.**
+  Todo estaba dentro de un `<g>` transformado, así que un nombre de 11px se
+  dibujaba a 24px con zoom 2.2: las letras crecían tan rápido como los huecos
+  entre ellas y acercarse no creaba sitio. Contraescalando las fuentes por
+  `1/k` el zoom pasa a ser la **válvula de escape** de la densidad — más lejos
+  2 etiquetas, más cerca 5, y son las mismas.
+- **Medir el texto, no estimarlo.** `longitud × 5.6` acierta lo bastante como
+  para parecer bien al zoom por defecto y fallar justo cuando caben suficientes
+  etiquetas para que importe.
+- **Callar lo que no se ha preguntado.** Seleccionar a alguien es preguntar por
+  *esa persona*: más allá de su propio círculo los nombres no son una
+  respuesta, son decorado que hay que leer para atravesar — y cada uno es un
+  obstáculo que echa fuera del lienzo a una etiqueta de relación.
+
+Cuando aun así no cabe nada, el mapa **se acerca a la vecindad** en vez de
+apretujarlas. La densidad es una razón para mover la cámara, no para rendirse.
+
+Medido sobre 12 selecciones, incluidas las más densas del racimo de Arvela:
+**34 etiquetas colocadas, 0 colisiones, 0 selecciones mudas.**
+
+Nada de esto depende del tamaño del grafo: el presupuesto es por pantalla y no
+crece con los datos. Es la parte que se lleva tal cual a la Coppermind.
+
+---
+
 ## Lo que el linter quiere que decidas
 
 Contra el vault de 2026-09-04:

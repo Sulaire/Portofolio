@@ -313,9 +313,42 @@ const layers = {};
 });
 svg.appendChild(gRoot);
 
+/* Geometry lives in world space; TEXT lives in screen space.
+   
+   Everything sits inside one transformed <g>, so an 11px name is drawn at 24px
+   when you zoom to 2.2 — the letters grow exactly as fast as the gaps between
+   them, and zooming in creates no room at all. Counter-scaling the fonts by
+   1/k pins them to a constant size on screen, which is what a map does: move
+   closer and the world spreads out under labels that stay the size they were.
+   That is what turns zoom into the release valve for label density — more
+   candidates fit, so more of them get placed. */
+const typeStyle = document.createElement('style');
+document.head.appendChild(typeStyle);
 function applyT(){
   gRoot.setAttribute('transform', `translate(${T.x},${T.y}) scale(${T.k})`);
+  const k = T.k;
+  typeStyle.textContent = `
+    .elabel{font-size:${(9.5 / k).toFixed(2)}px;stroke-width:${(3.5 / k).toFixed(2)}px}
+    .nlabel{font-size:${(11 / k).toFixed(2)}px;stroke-width:${(3 / k).toFixed(2)}px}
+    .nsub{font-size:${(8.5 / k).toFixed(2)}px;stroke-width:${(3 / k).toFixed(2)}px}
+    .ndagger{font-size:${(12 / k).toFixed(2)}px;stroke-width:${(3 / k).toFixed(2)}px}`;
+  relayoutText();
   updateLOD();
+  scheduleRelabel();
+}
+
+/* Re-hang the name block under its disc for the current text size. */
+function relayoutText(){
+  const k = T.k;
+  document.querySelectorAll('.nlabel[data-line],.nsub[data-line]').forEach(el => {
+    const r = +el.dataset.r, li = +el.dataset.line;
+    el.setAttribute('y', r + (12 + li * 11) / k);
+  });
+  document.querySelectorAll('.ndagger').forEach(el => {
+    const g = el.closest('.node');
+    const c = g && g.querySelector('circle.core');
+    if (c) el.setAttribute('y', -(+c.dataset.r) - 5 / k);
+  });
 }
 function viewport(){ const r = svg.getBoundingClientRect(); return {w:r.width, h:r.height}; }
 
@@ -803,6 +836,10 @@ function build(){
     lines.forEach((line, li) => {
       const tx = document.createElementNS(NS, 'text');
       tx.setAttribute('class', 'nlabel'); tx.setAttribute('text-anchor', 'middle');
+      // Offsets are world units but the text is screen-sized, so they are
+      // re-hung on every zoom by relayoutText(). r is the disc, which is
+      // world-space and does not move.
+      tx.dataset.line = li; tx.dataset.r = r;
       tx.setAttribute('y', r + 13 + li * 11);
       tx.textContent = line;
       g.appendChild(tx);
@@ -811,6 +848,7 @@ function build(){
     if (n.factionLabel || n.state){
       const f = document.createElementNS(NS, 'text');
       f.setAttribute('class', 'nsub'); f.setAttribute('text-anchor', 'middle');
+      f.dataset.line = lines.length; f.dataset.r = r;
       f.setAttribute('y', r + 13 + lines.length * 11);
       f.textContent = (n.state ? (STATE_MARK[n.state] || '') + ' ' + (STATE_ES[n.state] || n.state) + ' · ' : '')
                     + n.factionLabel;
@@ -857,7 +895,6 @@ function refreshEdges(){
   const hop = hopSet();
   const dist = distances();
   const L = lod();
-  let spoke = 0;
   DATA.edges.forEach((e, i) => {
     const el = els.edges[i];
     const vis = edgeVisible(e);
@@ -881,24 +918,8 @@ function refreshEdges(){
     el.line.style.opacity = dist
       ? (touching ? 1 : fadeAt(Math.max(dist.get(e.a) ?? 9, dist.get(e.b) ?? 9)))
       : .55;
-    el.label.style.display = (touching && L === 'node') ? '' : 'none';
-    if (touching){
-      el.label.textContent = edgeLabel(e, S.sel);
-      // Anchor the label a third of the way out from the SELECTED end rather
-      // than at the midpoint. Eight edges meeting at one node have eight
-      // midpoints scattered anywhere; they land on top of each other and on
-      // the neighbours' names. A third of the way out fans them around the
-      // selection like spokes — readable, and obviously "these are theirs".
-      const A = byId[e.a], B = byId[e.b];
-      const near = e.a === S.sel ? A : B, far = e.a === S.sel ? B : A;
-      // Stagger the radius per spoke. All eight labels at the same fraction
-      // sit on one ring around the selection and collide with each other and
-      // with whatever node happens to be at that distance; three alternating
-      // rings pull them apart with no layout work.
-      const ring = [0.30, 0.42, 0.36][(spoke++) % 3];
-      el.label.setAttribute('x', near.x + (far.x - near.x) * ring);
-      el.label.setAttribute('y', near.y + (far.y - near.y) * ring - 5);
-    }
+    void touching;
+    el.label.style.display = 'none';   // placeLabels() decides who gets one
   });
 }
 function refreshNodes(){
@@ -909,9 +930,11 @@ function refreshNodes(){
     const vis = nodeVisible(n, hop);
     g.classList.toggle('hidden', !vis);
     g.style.opacity = (vis && dist) ? fadeAt(dist.get(n.id)) : '';
-    // Only the selection and its immediate circle keep their names at a
-    // glance; past that the labels are noise you have to read through.
-    g.classList.toggle('quiet', !!dist && (dist.get(n.id) ?? 9) > 2);
+    // Selecting somebody is asking about THEM. Past their own circle the
+    // names are not an answer, they are scenery you have to read through —
+    // and every one of them is an obstacle that pushes a relationship label
+    // off the canvas. Quieting them is what buys the room to say something.
+    g.classList.toggle('quiet', !!dist && (dist.get(n.id) ?? 9) > 1);
   });
 }
 function refreshCounts(){
@@ -923,12 +946,181 @@ function refreshCounts(){
   $('#counts').textContent =
     `${nv} personajes · ${ev} relaciones${S.reveal >= 3 && sec ? ` · ${sec} con lectura oculta` : ''}`;
 }
-function refresh(){ refreshNodes(); refreshEdges(); refreshCounts(); renderSide(); syncControls(); saveURL(); }
+function refresh(){
+  refreshNodes(); refreshEdges(); refreshCounts(); renderSide();
+  syncControls(); saveURL(); placeLabels();
+}
+
+/* Panning and zooming change what fits, so the placement is redone — but on
+   the next frame, not on every wheel tick. */
+let relabelPending = false;
+function scheduleRelabel(){
+  if (relabelPending) return;
+  relabelPending = true;
+  requestAnimationFrame(() => { relabelPending = false; placeLabels(); });
+}
+
+/* ── label placement ────────────────────────────────────────────
+   The thing that actually decides whether a dense graph is readable.
+
+   Drawing a label on every edge of the selected node put ELEVEN of them
+   around Ithanel, six of which read "sin declarar", overlapping each other
+   and the names underneath. Three separate mistakes, and only the third is
+   about geometry:
+
+   1. It labelled ABSENCE. "Sin declarar" is 55% of the edges and carries no
+      information; the sheet on the right already says it, in a list, legibly.
+      Never spend canvas ink on the lack of a fact.
+   2. It had no BUDGET. Screen space is the scarce resource, not pixels: a
+      region holds four or five labels no matter how much you want to say.
+   3. It placed BLIND. Position was picked from the geometry alone, with no
+      idea what was already drawn there.
+
+   So: rank candidates by how much they tell you, try each in several spots,
+   and keep only the ones that land clear of everything placed so far. This is
+   ordinary cartographic label placement — greedy, with rejection — and it is
+   the technique that carries over to a graph of any size, because the budget
+   is per screen and does not grow with the data.
+
+   Zoom is the release valve. Boxes are measured in SCREEN pixels, so zooming
+   in spreads the anchors without growing the text, more candidates fit, and
+   more labels appear. The reader asks for detail by moving closer. */
+
+/* Measure text, do not estimate it. `length * 5.6` is close enough that the
+   placement looks right at the default zoom and wrong once enough labels fit
+   to matter: at k=2.2 the estimate drifted far enough to let four pairs
+   overlap. A 2D context measures the same string the SVG will draw, costs
+   nothing, and needs no layout. */
+const LINE_H = 14;
+const _mc = document.createElement('canvas').getContext('2d');
+const EDGE_FONT = '9.5px ui-monospace,"SF Mono",Menlo,Consolas,monospace';
+const NAME_FONT = '600 11px ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif';
+const SUB_FONT  = '8.5px ui-monospace,"SF Mono",Menlo,Consolas,monospace';
+function textW(s, font){ _mc.font = font; return _mc.measureText(s).width; }
+const toScreen = (x, y) => ({ x: T.x + x * T.k, y: T.y + y * T.k });
+/* `y` on an SVG <text> is the BASELINE, and the glyphs sit almost entirely
+   above it. Centring the model box on the baseline puts it ~4px lower than
+   the ink, which is why labels kept landing a hair over a name while the
+   collision test reported everything clear. */
+const BASELINE_LIFT = 4;
+/* A couple of pixels of slack on every box. The model is a rectangle and the
+   ink is glyphs with ascenders, accents and a stroke halo; two pixels absorb
+   the difference without costing a label that would genuinely have fitted. */
+const PAD = 2;
+const boxAt = (sx, sy, w, h) => ({ x: sx - w / 2 - PAD, y: sy - h / 2 - BASELINE_LIFT - PAD,
+                                   w: w + PAD * 2, h: h + PAD * 2 });
+const discAt = (sx, sy, w, h) => ({ x: sx - w / 2, y: sy - h / 2, w, h });
+const hitsBox = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w
+                       && a.y < b.y + b.h && b.y < a.y + a.h;
+
+let lastPlacement = { placed: 0, wanted: 0 };
+function placeLabels(){
+  els.edges.forEach(el => { el.label.style.display = 'none'; });
+  lastPlacement = { placed: 0, wanted: 0 };
+  if (lod() !== 'node' || !S.sel) return;
+
+  // Obstacles first: every name already on screen. An edge label that lands
+  // on a character's name has cost more than it bought.
+  const taken = [];
+  DATA.nodes.forEach(n => {
+    const g = els.nodes[n.id];
+    if (g.classList.contains('hidden') || g.classList.contains('quiet')) return;
+    if ((+g.style.opacity || 1) < 0.35) return;
+    const s = toScreen(n.x, n.y);
+    const lines = wrapName(n.name);
+    // Measure the WIDEST line of the block, and the faction line is often it:
+    // "The Crown" in 8.5px mono is wider than "Vareth" in 11px semibold, so
+    // measuring only the name left a strip either side that labels landed in.
+    const sub = n.state || n.factionLabel
+      ? (n.state ? (STATE_MARK[n.state] || '') + ' ' + (STATE_ES[n.state] || n.state) + ' · ' : '')
+        + (n.factionLabel || '')
+      : '';
+    const w = Math.max(
+      ...lines.map(l => textW(l, NAME_FONT)),
+      sub ? textW(sub, SUB_FONT) : 0) + 10;
+    // Screen-space box: the text no longer scales, so this is just its size.
+    const rr = (+els.nodes[n.id].querySelector('circle.core').dataset.r) * T.k;
+    taken.push(boxAt(s.x, s.y + rr + 6 + lines.length * 6,
+                     w, (lines.length + 1) * 12 + 4));
+    // The disc itself is an obstacle too. Only the names were listed, so a
+    // label was free to land squarely on a character's head.
+    taken.push(discAt(s.x, s.y, rr * 2, rr * 2));   // a disc has no baseline
+  });
+
+  // Candidates, best first. "How much does this tell me" is: a phrase the
+  // author wrote beats a vocabulary word, and a strong word beats a weak one.
+  const cands = adj[S.sel].filter(e => {
+    if (!edgeVisible(e)) return false;
+    const el = els.edges[e.i];
+    if (el.line.classList.contains('hidden')) return false;
+    const d = from(e, S.sel);
+    if (S.axis === 'bond') return !!e.bond;
+    // Never label an absence — and `kind: unknown` is one of two different
+    // things. With a phrase from the article it is a real relationship whose
+    // TYPE nobody chose, and the phrase is worth reading. With nothing, it is
+    // silence, and the sheet already lists it.
+    return !!d && (d.kind !== 'unknown' || !!d.label);
+  }).map(e => {
+    const d = from(e, S.sel);
+    return { e, text: edgeLabel(e, S.sel),
+             rank: (d && d.label ? 1 : 0) + (KIND_WEIGHT[d && d.kind] ?? 0) };
+  }).filter(c => c.text)
+    .sort((a, b) => b.rank - a.rank);
+
+  // Several candidate POSITIONS per label, not one.
+  //
+  // Cartographic placement offers a feature a ring of candidate spots and
+  // takes the first that is clear; offering one spot and giving up means a
+  // dense cluster places nothing at all — which is what happened the moment
+  // the discs joined the obstacle list. Here each label gets four distances
+  // along its edge, each tried on the line and then nudged to either side of
+  // it, so twelve chances before it is dropped.
+  const SPOTS = [0.34, 0.46, 0.58, 0.70];
+  const SIDES = [0, 1, -1];
+  for (const c of cands){
+    const e = c.e;
+    const near = byId[e.a === S.sel ? e.a : e.b];
+    const far  = byId[e.a === S.sel ? e.b : e.a];
+    const w = textW(c.text, EDGE_FONT) + 10;
+    // unit normal to the edge, for the sideways nudges
+    const dx = far.x - near.x, dy = far.y - near.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len, ny = dx / len;
+    let done = false;
+    for (const f of SPOTS){
+      for (const side of SIDES){
+        const off = side * 13 / T.k;
+        const wx = near.x + dx * f + nx * off;
+        const wy = near.y + dy * f + ny * off - 5 / T.k;
+        const s = toScreen(wx, wy);
+        if (taken.some(o => hitsBox(o, boxAt(s.x, s.y, w, LINE_H)))) continue;
+        taken.push(boxAt(s.x, s.y, w, LINE_H));
+        const el = els.edges[e.i];
+        el.label.textContent = c.text;
+        el.label.setAttribute('x', wx);
+        el.label.setAttribute('y', wy);
+        el.label.style.display = '';
+        done = true; break;
+      }
+      if (done) break;
+    }
+    if (done) lastPlacement.placed++;
+  }
+  lastPlacement.wanted = cands.length;
+}
 
 /* ── labels ─────────────────────────────────────────────────── */
 /* On the canvas a label competes with every name near it, so it is cut short;
    the sheet on the right carries the whole phrase and the note under it. */
-const clip = (s, n = 22) => !s ? '' : (s.length > n ? s.slice(0, n - 1) + '…' : s);
+function clip(s, n = 22){
+  if (!s) return '';
+  if (s.length <= n) return s;
+  // Cut at a word boundary. "publicly her pers…" reads as a typo; "publicly
+  // her…" reads as a phrase that continues, which is what it is.
+  const cut = s.slice(0, n - 1);
+  const sp = cut.lastIndexOf(' ');
+  return (sp > n * 0.5 ? cut.slice(0, sp) : cut) + '…';
+}
 
 function edgeLabel(e, viewer){
   if (S.axis === 'bond'){
@@ -943,7 +1135,7 @@ function edgeLabel(e, viewer){
 function showEdgeLabel(i, on){
   const e = DATA.edges[i];
   const el = els.edges[i];
-  if (S.sel && (e.a === S.sel || e.b === S.sel)) return;   // already labelled
+  if (S.sel && (e.a === S.sel || e.b === S.sel)) return;   // placeLabels owns it
   if (!on){ el.label.style.display = 'none'; return; }
   const A0 = byId[e.a], B0 = byId[e.b];
   el.label.setAttribute('x', (A0.x + B0.x) / 2);
@@ -1075,11 +1267,24 @@ function legendHTML(){
 function select(id, zoom = true){
   S.sel = (id === S.sel) ? null : id;
   refresh();
-  if (S.sel && zoom){
-    const ids = [S.sel, ...adj[S.sel].filter(edgeVisible).map(e => other(e, S.sel))];
-    fit(S.hops ? ids : null, 380);
-    if (!S.hops) { /* keep the whole map framed; the selection is highlighted */ }
+  if (!S.sel || !zoom) return;
+  if (S.hops){
+    fit([S.sel, ...adj[S.sel].filter(edgeVisible).map(e => other(e, S.sel))], 380);
+    return;
   }
+  /* Density is a reason to move the camera, not a reason to give up.
+     
+     In the crowded middle of Arvela a selection had room for NO labels at all
+     — click somebody and the map says nothing, which reads as broken even
+     though the sheet on the right is full. Rather than cram them in on top of
+     the names, zoom to the person's own neighbourhood: the same labels then
+     have somewhere to go. It only fires when the placement actually came back
+     empty, so a selection out in open space leaves the view where the reader
+     put it. */
+  requestAnimationFrame(() => {
+    if (lastPlacement.wanted && !lastPlacement.placed)
+      fit([S.sel, ...adj[S.sel].filter(edgeVisible).map(e => other(e, S.sel))], 420);
+  });
 }
 window.select = select;
 
