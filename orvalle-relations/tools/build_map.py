@@ -19,6 +19,7 @@ Emits `map-data.json`:
 Usage:  python3 build_map.py <vault-dir> [out.json]
 """
 import json
+import math
 import re
 import sys
 import unicodedata
@@ -29,8 +30,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (BOND_COLOUR, BOND_ES, BOND_FAMILY, BOND_FAMILY_ES,
-                   BOND_INVERSE, FACETS, KIND_ES, KIND_TO_FACET,
-                   FACET_COLOUR, normalise_kind)
+                   BOND_INVERSE, FACETS, KIND_ES, KIND_TO_FACET, KIND_VALENCE,
+                   KIND_WEIGHT, FACET_COLOUR, normalise_kind)
 
 FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.S)
 WIKILINK = re.compile(r"\[\[([^\]|#]+)(?:\|([^\]]+))?\]\]")
@@ -419,11 +420,66 @@ def build(root):
 
 
 # ── layout ───────────────────────────────────────────────────────────
-# A drawn character is not a dot, it is a label box: the name, the faction
-# under it, and the circle. Roughly this many pixels, and packing dots instead
-# of boxes is why the dense realm still read as a pile after relaxation — the
-# circles were comfortably apart and the names were on top of each other.
-LABEL_W, LABEL_H = 132, 46
+# A drawn character is not a dot, it is a label box: the disc, the name (over
+# two lines when it is long) and the faction under it. Packing dots instead of
+# boxes is why the dense realm still read as a pile after relaxation — the
+# circles were comfortably apart and the names were printed over each other.
+# Wrapping long names trades width for height and packs about a third tighter.
+LABEL_W, LABEL_H = 108, 54
+
+
+def separate(placed, keys, strength):
+    """Push overlapping LABEL BOXES apart, along the axis of least penetration.
+
+    An elliptical separator does not match what is drawn. Two nodes 100px apart
+    horizontally and 35px vertically clear a 132x46 ellipse comfortably and
+    still print one name across another, because a label is a rectangle.
+
+    Displacements are accumulated and applied once per sweep, not as each pair
+    is examined. Applying them immediately means a node in a dense cluster is
+    shoved by six neighbours in a row, overshoots far past all of them, and
+    gets snapped back by the anchor next iteration — the layout oscillates
+    instead of settling, and ends up with MORE collisions than it started with.
+    """
+    dxs = {k: 0.0 for k in keys}
+    dys = {k: 0.0 for k in keys}
+    for i in range(len(keys)):
+        ka = keys[i]
+        pa = placed[ka]
+        for j in range(i + 1, len(keys)):
+            kb = keys[j]
+            pb = placed[kb]
+            dx = pb[0] - pa[0]
+            dy = pb[1] - pa[1]
+            ox = LABEL_W - abs(dx)
+            if ox <= 0:
+                continue
+            oy = LABEL_H - abs(dy)
+            if oy <= 0:
+                continue
+            # Overlapping on both axes: separate along whichever is cheaper,
+            # which moves each node the least distance that fixes it and so
+            # disturbs the topology least.
+            if ox / LABEL_W < oy / LABEL_H:
+                push = ox / 2 * (1 if dx >= 0 else -1)
+                dxs[ka] -= push
+                dxs[kb] += push
+            else:
+                push = oy / 2 * (1 if dy >= 0 else -1)
+                dys[ka] -= push
+                dys[kb] += push
+    moved = 0.0
+    for k in keys:
+        ux, uy = dxs[k] * strength, dys[k] * strength
+        # Cap per sweep: one node wedged between two others would otherwise
+        # take the sum of both pushes and fly out of its neighbourhood.
+        m = math.hypot(ux, uy)
+        if m > LABEL_H:
+            ux, uy = ux / m * LABEL_H, uy / m * LABEL_H
+        placed[k][0] += ux
+        placed[k][1] += uy
+        moved += abs(ux) + abs(uy)
+    return moved
 
 
 def layout(nodes, edges, groups, seed=7):
@@ -435,7 +491,6 @@ def layout(nodes, edges, groups, seed=7):
     build a mental map of it. Positions are computed once, here, and shipped.
     The map stops moving and starts being a place.
     """
-    import math
 
     by_realm = defaultdict(list)
     for n in nodes.values():
@@ -492,41 +547,102 @@ def layout(nodes, edges, groups, seed=7):
                 placed[n["id"]] = [fcx + math.cos(th) * rr,
                                    fcy + math.sin(th) * rr * 0.72]
 
+    # Where a character's life actually happens.
+    #
+    # Grouping strictly by realm puts every Roquenegra inside the Arvela
+    # cluster — including the ones whose edges nearly all go to Kurogane — and
+    # then those edges cross the entire map and the picture turns to
+    # spaghetti. So each anchor is pulled toward the people that character
+    # actually deals with, and the border cases end up on the border.
+    #
+    # The old map tried this and broke it: it slid the anchor toward the
+    # CENTRE in proportion to how many realms you touched, and separately
+    # shrank the radius by the magnitude of the averaged direction. Two
+    # collapses multiplied, so anyone with cross-border contacts landed in the
+    # middle and the realms stopped meaning anything. Here the anchor moves
+    # toward the contacts' own positions instead, which keeps the realm
+    # structure and still lets Aldric sit on the Kurogane side of Arvela.
+    base = {i: tuple(pt) for i, pt in placed.items()}
+    nbrs = defaultdict(list)
+    for e in edges:
+        if e["a"] in base and e["b"] in base:
+            nbrs[e["a"]].append(e["b"])
+            nbrs[e["b"]].append(e["a"])
+    anchors = {}
+    for i, pt in base.items():
+        ns = nbrs.get(i, [])
+        if not ns:
+            anchors[i] = list(pt)
+            continue
+        # Home always outvotes abroad. Without this floor a character whose
+        # contacts all happen to be foreign gets flung to the far side of the
+        # ring, which is not a fact about them, it is an artefact.
+        w_self = max(2.0, len(ns) * 1.1)
+        sx = pt[0] * w_self + sum(base[n][0] for n in ns)
+        sy = pt[1] * w_self + sum(base[n][1] for n in ns)
+        w = w_self + len(ns)
+        anchors[i] = [sx / w, sy / w]
+
     # Relaxation. Seeded, fixed iteration count, so two builds of the same
     # vault produce byte-identical coordinates and the map is in the same
     # place tomorrow as it was today.
-    anchors = {i: list(p) for i, p in placed.items()}
     adj = [(e["a"], e["b"]) for e in edges if e["a"] in placed and e["b"] in placed]
     keys = sorted(placed)
-    # Separation is measured in label boxes, not radii: the ellipse is wide
-    # and short because that is the shape of a name with a faction under it.
-    ax, ay = LABEL_W * 0.92, LABEL_H * 1.15
-    for step in range(420):
-        t = 1 - step / 420
+    for step in range(520):
+        t_ = 1 - step / 520
         for a, b in adj:
             pa, pb = placed[a], placed[b]
             dx, dy = pb[0] - pa[0], pb[1] - pa[1]
             d = math.hypot(dx, dy) or 1
-            pull = (d - 260) * 0.010 * t
+            pull = (d - 230) * 0.016 * t_
             ux, uy = dx / d * pull, dy / d * pull
             pa[0] += ux; pa[1] += uy
             pb[0] -= ux; pb[1] -= uy
-        for i in range(len(keys)):
-            pa = placed[keys[i]]
-            for j in range(i + 1, len(keys)):
-                pb = placed[keys[j]]
-                dx, dy = (pb[0] - pa[0]) / ax, (pb[1] - pa[1]) / ay
-                d2 = dx * dx + dy * dy
-                if 1e-6 < d2 < 1:
-                    d = math.sqrt(d2)
-                    push = (1 - d) * 0.5
-                    ux, uy = dx / d * push * ax, dy / d * push * ay
-                    pa[0] -= ux; pa[1] -= uy
-                    pb[0] += ux; pb[1] += uy
+        separate(placed, keys, 0.5)
         for k in keys:
-            p, a = placed[k], anchors[k]
-            p[0] += (a[0] - p[0]) * 0.03
-            p[1] += (a[1] - p[1]) * 0.03
+            pt, a = placed[k], anchors[k]
+            pt[0] += (a[0] - pt[0]) * 0.022
+            pt[1] += (a[1] - pt[1]) * 0.022
+
+    # Give the map room before decluttering.
+    #
+    # Pulling edges to ~230px is what killed the long cross-map lines, but it
+    # also squeezed 45 label boxes into 58% of the canvas area, and no amount
+    # of pushing resolves rectangles at that density — the separator just
+    # oscillates and ends with more collisions than it started with.
+    #
+    # Scaling every position by one factor preserves the topology exactly: the
+    # picture is identical, the labels are simply smaller relative to the
+    # distances. Absolute pixels do not matter here because the reader zooms;
+    # the ratio of label size to edge length is the whole game.
+    span_x = max(pt[0] for pt in placed.values()) - min(pt[0] for pt in placed.values())
+    span_y = max(pt[1] for pt in placed.values()) - min(pt[1] for pt in placed.values())
+    area = max(span_x * span_y, 1.0)
+    want = len(placed) * LABEL_W * LABEL_H * 3.2      # ~31% occupancy
+    if area < want:
+        s = math.sqrt(want / area)
+        for k in keys:
+            placed[k][0] *= s
+            placed[k][1] *= s
+        for k in keys:
+            anchors[k][0] *= s
+            anchors[k][1] *= s
+
+    # Separation-only finish. Pulling edges tighter (which is what stops the
+    # long cross-map lines) also drags labels on top of each other, and the two
+    # goals fight for as long as both forces are live. So resolve the topology
+    # first, then spend a short pass doing nothing but pushing label boxes
+    # apart. Topology barely moves — the nodes are already near where they
+    # belong — and the names stop colliding.
+    for step in range(400):
+        moved = separate(placed, keys, 0.55)
+        # A very weak tether so the separation does not slowly inflate the map
+        for k in keys:
+            pt, a = placed[k], anchors[k]
+            pt[0] += (a[0] - pt[0]) * 0.003
+            pt[1] += (a[1] - pt[1]) * 0.003
+        if moved < 0.5:
+            break
 
     # Normalise to a positive origin so the renderer never meets a negative
     # bounding box.
@@ -565,6 +681,8 @@ def render_html(data, template, out):
         f"const FACET_LABEL = {json.dumps({k: v[0] for k, v in FACETS.items()}, ensure_ascii=False)};",
         f"const KIND_TO_FACET = {json.dumps(KIND_TO_FACET)};",
         f"const KIND_ES = {json.dumps(KIND_ES, ensure_ascii=False)};",
+        f"const KIND_WEIGHT = {json.dumps(KIND_WEIGHT)};",
+        f"const KIND_VALENCE = {json.dumps(KIND_VALENCE)};",
         f"const BOND_FAMILY = {json.dumps(BOND_FAMILY)};",
         f"const BOND_COLOUR = {json.dumps(BOND_COLOUR)};",
         f"const BOND_ES = {json.dumps(BOND_ES, ensure_ascii=False)};",

@@ -100,6 +100,20 @@ relations:
   **personas**. Es la misma jerarquía que ya declara el campo `up:` de cada
   artículo: `Nations > Arvela > The Crown > Vareth`. No hubo que inventar una
   agrupación; estaba escrita.
+- **Clic** en alguien abre su ficha y **atenúa el resto por distancia en
+  saltos** — vecinos casi enteros, el otro lado del mundo casi ausente. Eso se
+  lee como profundidad; atenuar todo por igual se lee como un filtro roto.
+- **Arrastra** cualquier nodo para recolocarlo; sus aristas, gradientes y
+  etiquetas lo siguen. *Reiniciar* los devuelve a su sitio.
+- **Agrupar por reino / facción / pueblo**, con un slider de **separación**.
+  A 0 es exactamente el mapa que produjo el build, así que la geografía que
+  aprendiste sigue ahí; subiéndolo se exagera el agrupamiento sobre esa misma
+  base en vez de recalcular un mapa distinto. Con *pueblo* al 70 la cohesión
+  intra-grupo pasa de 0.53 a 0.26.
+- **Inicial dentro del disco** porque no hay retratos y un círculo pelado no es
+  una cara. **†** los fallecidos, y un glifo propio por cada `state` — `Meta/05`
+  pide marca y no color, porque el color ya lleva el reino y recolorear a
+  Rukhien costaría lo que más importa de él, que viene *del* Byway.
 - **Saltos 1/2/3** acota el grafo a la vecindad del personaje seleccionado.
   Salto 1 = su gente (13 nodos). Salto 2 = su mundo (25). Salto 3 = ya es un
   mapa. Teclas `0`–`3`.
@@ -124,6 +138,7 @@ Contra el vault de 2026-09-04:
 | **13** destinos sin artículo | `Belarno de Quilmar`, `The Branch`, `A woman at the parley`… |
 | **43** relaciones de un solo lado | el 46% del grafo sale «sin declarar» por un extremo |
 | **6** secciones en prosa libre | Bastyr, Lartasez, Ponnler, Storm, Talassia, The Faalari Sown |
+| **7** `died:` vacíos | Alamna, Baldric, Des Terrao, Don Enfadao, Miedo Miedin, Vareth, Yurael tienen el campo pero a `null`. Tu `Meta/05` dice que rellenarlo es lo que hace muerto a alguien en el mapa, así que salen 4 fallecidos y no 7 |
 
 `--fix-spellings` reescribe las grafías heredadas en el frontmatter. Lo demás
 necesita una decisión, que es justo por lo que el linter no la toma.

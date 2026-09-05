@@ -31,9 +31,24 @@ FACETS = {
 KIND_TO_FACET = {k: f for f, (_, kinds) in FACETS.items() for k in kinds}
 KINDS = set(KIND_TO_FACET)
 
-# Sign is used for the strength bar and nothing else. It is NOT a number the
-# writer supplies: the wiki has no numeric affection scale and inventing one
-# put 67 fake zeroes into the old map.
+# How far the sidebar bar fills, and which way it leans.
+#
+# This is a property of the VOCABULARY WORD, not a measurement of a particular
+# relationship. `hatred` is a stronger word than `rival` in every sentence it
+# appears in, so the bar can say so honestly. What it deliberately is not is
+# the old per-pair `value`: nobody could assign −100..+100 consistently, the
+# wiki has no such scale, and 67 of the old map's 142 edges carried a 0 that
+# the bar then drew as "neutral" when it meant "nobody said".
+#
+# weight 0..1 fills the bar; valence −1/0/+1 picks the side and the colour.
+KIND_WEIGHT = {
+    "love": 1.0, "hatred": 1.0, "devotion": .95, "sworn-loyalty": .95,
+    "enemy": .85, "kin": .8, "trust": .75, "friendship": .75, "contempt": .7,
+    "admiration": .6, "resentment": .6, "rival": .6, "respect": .55,
+    "ally": .55, "fear": .5, "complicated": .45, "cautious-ally": .4,
+    "pity": .35, "ambivalent": .3, "unknown": 0.0,
+}
+
 KIND_VALENCE = {
     "love": 1, "kin": 0, "devotion": 1, "sworn-loyalty": 1,
     "friendship": 1, "trust": 1, "ally": 1, "cautious-ally": 1,
